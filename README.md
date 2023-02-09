@@ -28,7 +28,7 @@ cliente.
 
 ## ENTIDADES
 
-Produto
+### Produto
     - prodID INT PRIMARY KEY AUTO_INCREMENT
     - nomeProd VARCHAR(50)
     - descricaoProd VARCHAR(100)
@@ -43,32 +43,32 @@ Produto
     ( UM PRODUTO PODE TER VÁRIAS CATEGORIAS? )
     ( UM PRODUTO PODE TER VÁRIOS ESTOQUES OU APENAS UM? )
     
-Categoria
+### Categoria
     - categoriaID INT PRIMARY KEY AUTO_INCREMENT
     - nomeCategoria VARCHAR(50)
     - descricaoCategoria VARCHAR(100)
 
-Fornecedor
+### Fornecedor
     - fornecedorID INT PRIMARY KEY AUTO_INCREMENT
     - nomeFornecedor VARCHAR(50)
     - localidadeFornecedor VARCHAR(50)
     - tipoFornecedor ENUM('Física', 'Jurídica')
     - CNPJ_CPF VARCHAR(50)
 
-Estoque
+### Estoque
     - estoqueID INT PRIMARY KEY AUTO_INCREMENT
     - codigoEstoque VARCHAR(50)
     - quantidade INT
     - produtoID INT FOREIGN KEY REFERENCES Produto(produtoID)
     - armazemID INT FOREIGN KEY REFERENCES Armazem(armazemID)
 
-Armazem
+### Armazem
     - armazemID INT PRIMARY KEY AUTO_INCREMENT
     - nomeArmazem VARCHAR(50)
     - enderecoArmazem VARCHAR(50)
     ( MODELAR ESTOQUES POR ARMAZEM )
 
-Pedido
+### Pedido
     - pedidoID INT PRIMARY KEY AUTO_INCREMENT
     - clienteID INT FOREIGN KEY REFERENCES Cliente(clienteID)
     - dataPedido DATETIME
@@ -79,7 +79,7 @@ Pedido
     ( MODELAR STATUS DO PEDIDO COMO ENUM, OU COMO TABELA? )
     ( MODELAR MODO DE ENCOMENDA COMO ENUM, OU COMO TABELA? )
 
-Cliente
+### Cliente
     - clienteID INT PRIMARY KEY AUTO_INCREMENT
     - nomeCliente VARCHAR(50)
     - telefoneCliente VARCHAR(50)
@@ -90,7 +90,7 @@ Cliente
     - limiteCredito DECIMAL(10,2)
     - dataCadastroCliente DATETIME
 
-TraducaoProduto
+### TraducaoProduto
     - traducaoProdID INT PRIMARY KEY AUTO_INCREMENT
     - nomeTraducao VARCHAR(50)
     - descricaoTraducao VARCHAR(100)
