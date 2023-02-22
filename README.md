@@ -1,5 +1,7 @@
 # Projeto Banco de Dados
 
+Projeto da disciplina de Banco de Dados, do curso de Ciência da Computação da Universidade Federal do Agreste de Pernambuco (UFAPE), ministrada pelo professor Dimas Cassimiro do Nascimento Filho.
+
 ## REQUISITOS
 
 O banco de dados deve armazenar informações de produtos, pedidos, clientes, estoques e
@@ -53,7 +55,7 @@ cliente.
     - nomeFornecedor VARCHAR(50)
     - localidadeFornecedor VARCHAR(50)
     - tipoFornecedor ENUM('Física', 'Jurídica')
-    - CNPJ_CPF VARCHAR(50)
+    - documentoFornecedor VARCHAR(50)
 
 ### Estoque
     - estoqueID INT PRIMARY KEY AUTO_INCREMENT
@@ -74,10 +76,8 @@ cliente.
     - dataPedido DATETIME
     - modoEncomenda ENUM('Presencial', 'Online')
     - statusPedido ENUM('Aguardando Pagamento', 'Pagamento Confirmado', 'Em Preparação', 'Em Transporte', 'Entregue')
-    - dataPrazoEntrega DATE
+    - PrazoEntrega DATE
     ( MODELAR PRODUTOS POR PEDIDO, COM QUANTIDADES DIFERENTES, E CHECAR SE O PREÇO DO PRODUTO É IGUAL OU SUPERIOR AO PREÇO DE VENDA MÍNIMO DO PRODUTO )
-    ( MODELAR STATUS DO PEDIDO COMO ENUM, OU COMO TABELA? )
-    ( MODELAR MODO DE ENCOMENDA COMO ENUM, OU COMO TABELA? )
 
 ### Cliente
     - clienteID INT PRIMARY KEY AUTO_INCREMENT
@@ -91,9 +91,9 @@ cliente.
     - dataCadastroCliente DATETIME
 
 ### TraducaoProduto
-    - traducaoProdID INT PRIMARY KEY AUTO_INCREMENT
+    - idioma PRIMARY KEY VARCHAR(50)
+    - produtoID INT PRIMARY KEY FOREIGN KEY REFERENCES Produto(produtoID)
     - nomeTraducao VARCHAR(50)
     - descricaoTraducao VARCHAR(100)
-    - idioma VARCHAR(50)
-    - produtoID INT FOREIGN KEY REFERENCES Produto(produtoID)
+    
 
