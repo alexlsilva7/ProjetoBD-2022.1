@@ -1,8 +1,8 @@
-# Projeto Banco de Dados
+# Projeto Banco de Dados - 2022.1 - UFAPE
 
 Projeto da disciplina de Banco de Dados, do curso de Ciência da Computação da Universidade Federal do Agreste de Pernambuco (UFAPE), ministrada pelo professor Dimas Cassimiro do Nascimento Filho.
 
-## REQUISITOS
+## Requisitos do Projeto
 
 O banco de dados deve armazenar informações de produtos, pedidos, clientes, estoques e
 outras informações relacionadas. Um produto deve ser identificado por um identificador (ID),
@@ -28,72 +28,13 @@ identificado unicamente e sequencialmente por um ID, além de constar dados sobr
 os telefone(s), o país, estado, cidade, e-mail(s), limite de crédito ($) e data de cadastro do
 cliente.
 
-## ENTIDADES
+## Modelo Conceitual (ER)
 
-### Produto
-    - prodID INT PRIMARY KEY AUTO_INCREMENT
-    - nomeProd VARCHAR(50)
-    - descricaoProd VARCHAR(100)
-    - dataGarantia DATE
-    - statusProd ENUM('Ativo', 'Inativo')
-    - precoCusto DECIMAL(10,2)
-    - precoVenda DECIMAL(10,2)
-    - precoVendaMin DECIMAL(10,2)
-    - fornecedorID INT FOREIGN KEY REFERENCES Fornecedor(fornecedorID)
-    - categoriasProdID INT FOREIGN KEY REFERENCES Categoria(categoriaID)
-    - traducaoProdID INT FOREIGN KEY REFERENCES TraducaoProduto(traducaoProdID)
-    ( UM PRODUTO PODE TER VÁRIAS CATEGORIAS? )
-    ( UM PRODUTO PODE TER VÁRIOS ESTOQUES OU APENAS UM? )
-    
-### Categoria
-    - categoriaID INT PRIMARY KEY AUTO_INCREMENT
-    - nomeCategoria VARCHAR(50)
-    - descricaoCategoria VARCHAR(100)
+![Modelo Conceitual](entidade-relacionamento.png)
 
-### Fornecedor
-    - fornecedorID INT PRIMARY KEY AUTO_INCREMENT
-    - nomeFornecedor VARCHAR(50)
-    - localidadeFornecedor VARCHAR(50)
-    - tipoFornecedor ENUM('Física', 'Jurídica')
-    - documentoFornecedor VARCHAR(50)
+## Modelo Lógico (Relacional)
 
-### Estoque
-    - estoqueID INT PRIMARY KEY AUTO_INCREMENT
-    - codigoEstoque VARCHAR(50)
-    - quantidade INT
-    - produtoID INT FOREIGN KEY REFERENCES Produto(produtoID)
-    - armazemID INT FOREIGN KEY REFERENCES Armazem(armazemID)
+- [Modelo relacional simples](Modelo_Relacional.pdf)
 
-### Armazem
-    - armazemID INT PRIMARY KEY AUTO_INCREMENT
-    - nomeArmazem VARCHAR(50)
-    - enderecoArmazem VARCHAR(50)
-    ( MODELAR ESTOQUES POR ARMAZEM )
-
-### Pedido
-    - pedidoID INT PRIMARY KEY AUTO_INCREMENT
-    - clienteID INT FOREIGN KEY REFERENCES Cliente(clienteID)
-    - dataPedido DATETIME
-    - modoEncomenda ENUM('Presencial', 'Online')
-    - statusPedido ENUM('Aguardando Pagamento', 'Pagamento Confirmado', 'Em Preparação', 'Em Transporte', 'Entregue')
-    - PrazoEntrega DATE
-    ( MODELAR PRODUTOS POR PEDIDO, COM QUANTIDADES DIFERENTES, E CHECAR SE O PREÇO DO PRODUTO É IGUAL OU SUPERIOR AO PREÇO DE VENDA MÍNIMO DO PRODUTO )
-
-### Cliente
-    - clienteID INT PRIMARY KEY AUTO_INCREMENT
-    - nomeCliente VARCHAR(50)
-    - telefoneCliente VARCHAR(50)
-    - paisCliente VARCHAR(50)
-    - estadoCliente VARCHAR(50)
-    - cidadeCliente VARCHAR(50)
-    - emailCliente VARCHAR(50)
-    - limiteCredito DECIMAL(10,2)
-    - dataCadastroCliente DATETIME
-
-### TraducaoProduto
-    - idioma PRIMARY KEY VARCHAR(50)
-    - produtoID INT PRIMARY KEY FOREIGN KEY REFERENCES Produto(produtoID)
-    - nomeTraducao VARCHAR(50)
-    - descricaoTraducao VARCHAR(100)
-    
+- [Modelo relacional detalhado](relacional.md)
 
