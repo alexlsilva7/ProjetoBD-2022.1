@@ -76,5 +76,12 @@
     - nome VARCHAR(50)
     - descricao VARCHAR(100)
 
+### Venda
+    -id INT PRIMARY KEY AUTO_INCREMENT
+    -data DATETIME
+    -clienteID INT FOREIGN KEY REFERENCES Cliente(id)
+    -produtoID INT FOREIGN KEY REFERENCES Produto(id)
+    -quantidade INT
+    -precoVendaProduto DECIMAL(10,2)
 
         
