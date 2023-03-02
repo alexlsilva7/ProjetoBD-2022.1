@@ -108,3 +108,13 @@ CREATE TABLE ProdutoPedido (
   FOREIGN KEY (pedidoId) REFERENCES Pedido(id),
   CHECK (quantidade > 0)
 );
+
+CREATE TABLE Venda (
+  id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  data DATETIME,
+  produtoId INT NOT NULL,
+  categoriaId INT NOT NULL,
+  quantidade INT,
+  precoVendaProduto DECIMAL(10,2),
+  FOREIGN KEY(produtoID) REFERENCES Produto(id)
+);
