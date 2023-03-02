@@ -36,5 +36,3 @@ cliente.
 
 - [Modelo relacional simples](Modelo_Relacional.pdf)
 
-- [Modelo relacional detalhado](relacional.md)
-

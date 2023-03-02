@@ -1,106 +1,110 @@
 CREATE TABLE Fornecedor (
-  id INT NOT NULL PRIMARY KEY,
+  id INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
   nome VARCHAR(255) NOT NULL,
-  localidade VARCHAR(255),
-  tipo ENUM('Física', 'Jurídica'),
-  documento VARCHAR(50)
+  localidade VARCHAR(255) NOT NULL,
+  tipo ENUM('Física', 'Jurídica') NOT NULL,
+  documento VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE Categoria (
-  id INT NOT NULL PRIMARY KEY,
+  id INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
   nome VARCHAR(255) NOT NULL,
-  descricao TEXT
+  descricao VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE Produto (
-  id INT NOT NULL PRIMARY KEY,
+  id INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
   nome VARCHAR(255) NOT NULL,
-  descricao TEXT,
+  descricao VARCHAR(255) NOT NULL,
   dataGarantia DATE,
-  status Enum('ativo', 'inativo'),
-  precoCusto DECIMAL(10,2),
-  precoVenda DECIMAL(10,2),
-  precoVendaMin DECIMAL(10,2),
-  fornecedorId INT,
-  FOREIGN KEY (fornecedorId) REFERENCES Fornecedor(id)
+  status ENUM('ativo', 'inativo') NOT NULL,
+  precoCusto DECIMAL(10,2) NOT NULL,
+  precoVenda DECIMAL(10,2) NOT NULL,
+  precoVendaMin DECIMAL(10,2) NOT NULL,
+  fornecedorId INT UNSIGNED NOT NULL,
+  FOREIGN KEY (fornecedorId) REFERENCES Fornecedor(id),
+  CHECK (precoCusto > 0 && precoCusto < precoVenda),
+  CHECK (precoVenda > 0),
+  CHECK (precoVendaMin > 0 && precoVendaMin < precoVenda && precoVendaMin > precoCusto)
 );
 
 CREATE TABLE TraducaoProduto (
-  produtoId INT NOT NULL,
+  produtoId INT UNSIGNED NOT NULL,
   idioma VARCHAR(10) NOT NULL,
   nome VARCHAR(255) NOT NULL,
-  descricao TEXT,
+  descricao VARCHAR(255) NOT NULL,
   PRIMARY KEY (produtoId, idioma),
   FOREIGN KEY (produtoId) REFERENCES Produto(id)
 );
 
-
-
 CREATE TABLE ProdutoCategoria (
-  produtoId INT NOT NULL,
-  categoriaId INT NOT NULL,
+  produtoId INT UNSIGNED NOT NULL,
+  categoriaId INT UNSIGNED NOT NULL,
   PRIMARY KEY (produtoId, categoriaId),
   FOREIGN KEY (produtoId) REFERENCES Produto(id),
   FOREIGN KEY (categoriaId) REFERENCES Categoria(id)
 );
 
 CREATE TABLE Armazem (
-  id INT NOT NULL PRIMARY KEY,
-  codigo VARCHAR(50),
-  endereco TEXT
+  id INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
+  nome VARCHAR(50) NOT NULL,
+  endereco VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE Estoque (
-  id INT NOT NULL PRIMARY KEY,
-  codigo VARCHAR(50),
-  quantidade INT,
-  armazemId INT,
-  produtoId INT,
+  id INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
+  codigo VARCHAR(50) NOT NULL,
+  quantidade INT UNSIGNED NOT NULL,
+  armazemId INT UNSIGNED NOT NULL,
+  produtoId INT UNSIGNED NOT NULL,
   FOREIGN KEY (armazemId) REFERENCES Armazem(id),
   FOREIGN KEY (produtoId) REFERENCES Produto(id)
 );
 
-
 CREATE TABLE Cliente (
-  id INT NOT NULL PRIMARY KEY,
+  id INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
   nome VARCHAR(255) NOT NULL,
   pais VARCHAR(100),
   estado VARCHAR(100),
   cidade VARCHAR(100),
-  limiteCredito DECIMAL(10,2),
-  dataCadastro DATE
+  limiteCredito DECIMAL(10,2) NOT NULL,
+  dataCadastro DATE NOT NULL,
+  CHECK (limiteCredito > 0)
 );
 
 CREATE TABLE TelefoneCliente (
-  clienteId INT NOT NULL,
-  telefone VARCHAR(20) NOT NULL,
+  clienteId INT UNSIGNED NOT NULL,
+  telefone VARCHAR(11) NOT NULL,
   PRIMARY KEY (clienteId, telefone),
-  FOREIGN KEY (clienteId) REFERENCES Cliente(id)
+  FOREIGN KEY (clienteId) REFERENCES Cliente(id),
+  CHECK (LENGTH(telefone) = 11)
 );
 
 CREATE TABLE EmailCliente (
-  clienteId INT NOT NULL,
+  clienteId INT UNSIGNED AUTO_INCREMENT NOT NULL,
   email VARCHAR(255) NOT NULL,
   PRIMARY KEY (clienteId, email),
   FOREIGN KEY (clienteId) REFERENCES Cliente(id)
 );
 
 CREATE TABLE Pedido (
-  id INT NOT NULL PRIMARY KEY,
-  data DATE,
-  modoEncomenda VARCHAR(50),
-  status ENUM('Aguardando Pagamento', 'Pagamento Confirmado', 'Em Preparação', 'Em Transporte', 'Entregue'),
-  prazoEntrega DATE,
-  clienteId INT,
-  FOREIGN KEY (clienteId) REFERENCES Cliente(id)
+  id INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
+  data DATE NOT NULL,
+  modoEncomenda ENUM('Retirada', 'Entrega') NOT NULL,
+  status ENUM('Aguardando Pagamento', 'Pagamento Confirmado', 'Em Preparação', 'Em Transporte', 'Entregue') NOT NULL,
+  prazoEntrega DATE NOT NULL,
+  clienteId INT UNSIGNED NOT NULL,
+  FOREIGN KEY (clienteId) REFERENCES Cliente(id),
+  CHECK (prazoEntrega >= data)
 );
 
 CREATE TABLE ProdutoPedido (
-  produtoId INT NOT NULL,
-  pedidoId INT NOT NULL,
-  precoVendaProduto DECIMAL(10,2),
-  quantidade INT,
+  produtoId INT UNSIGNED NOT NULL,
+  pedidoId INT UNSIGNED NOT NULL,
+  precoVendaProduto DECIMAL(10,2) NOT NULL,
+  quantidade INT UNSIGNED NOT NULL,
   PRIMARY KEY (produtoId, pedidoId),
   FOREIGN KEY (produtoId) REFERENCES Produto(id),
-  FOREIGN KEY (pedidoId) REFERENCES Pedido(id)
+  FOREIGN KEY (pedidoId) REFERENCES Pedido(id),
+  CHECK (quantidade > 0)
 );
