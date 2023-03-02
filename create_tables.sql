@@ -103,18 +103,9 @@ CREATE TABLE ProdutoPedido (
   pedidoId INT UNSIGNED NOT NULL,
   precoVendaProduto DECIMAL(10,2) NOT NULL,
   quantidade INT UNSIGNED NOT NULL,
+  categoriaId INT NOT NULL,
   PRIMARY KEY (produtoId, pedidoId),
   FOREIGN KEY (produtoId) REFERENCES Produto(id),
   FOREIGN KEY (pedidoId) REFERENCES Pedido(id),
   CHECK (quantidade > 0)
-);
-
-CREATE TABLE Venda (
-  id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-  data DATETIME,
-  produtoId INT NOT NULL,
-  categoriaId INT NOT NULL,
-  quantidade INT,
-  precoVendaProduto DECIMAL(10,2),
-  FOREIGN KEY(produtoID) REFERENCES Produto(id)
 );
