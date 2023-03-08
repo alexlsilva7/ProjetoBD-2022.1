@@ -23,13 +23,13 @@ CREATE TABLE Produto (
   precoVendaMin DECIMAL(10,2) NOT NULL,
   fornecedorId INT UNSIGNED NOT NULL,
   FOREIGN KEY (fornecedorId) REFERENCES Fornecedor(id),
-  CHECK (precoCusto > 0 && precoCusto < precoVenda),
-  CHECK (precoVenda > 0),
-  CHECK (precoVendaMin > 0 && precoVendaMin < precoVenda && precoVendaMin > precoCusto)
+  CONSTRAINT precoCustoMenorPrecoVenda CHECK (precoCusto < precoVenda),
+  CONSTRAINT precoVendaMaiorQueZero CHECK (precoVenda > 0),
+  CONSTRAINT precoVendaMinMenorPrecoVendaAndMaiorPrecoCusto CHECK (precoVendaMin < precoVenda AND precoVendaMin > precoCusto)
 );
 
 CREATE TABLE TraducaoProduto (
-  produtoId INT UNSIGNED NOT NULL,
+  produtoId INT UNSIG NED NOT NULL,
   idioma VARCHAR(10) NOT NULL,
   nome VARCHAR(255) NOT NULL,
   descricao VARCHAR(255) NOT NULL,
@@ -69,7 +69,7 @@ CREATE TABLE Cliente (
   cidade VARCHAR(100),
   limiteCredito DECIMAL(10,2) NOT NULL,
   dataCadastro DATE NOT NULL,
-  CHECK (limiteCredito > 0)
+  CONSTRAINT limiteCreditoMaiorQueZero CHECK (limiteCredito > 0)
 );
 
 CREATE TABLE TelefoneCliente (
@@ -77,7 +77,7 @@ CREATE TABLE TelefoneCliente (
   telefone VARCHAR(11) NOT NULL,
   PRIMARY KEY (clienteId, telefone),
   FOREIGN KEY (clienteId) REFERENCES Cliente(id),
-  CHECK (LENGTH(telefone) = 11)
+  CONSTRAINT telefoneCliente11Digitos CHECK (LENGTH(telefone) = 11)
 );
 
 CREATE TABLE EmailCliente (
@@ -95,7 +95,7 @@ CREATE TABLE Pedido (
   prazoEntrega DATE NOT NULL,
   clienteId INT UNSIGNED NOT NULL,
   FOREIGN KEY (clienteId) REFERENCES Cliente(id),
-  CHECK (prazoEntrega >= data)
+  CONSTRAINT prazoEntregaMaiorIgualData CHECK (prazoEntrega >= data)
 );
 
 CREATE TABLE ProdutoPedido (
@@ -107,5 +107,6 @@ CREATE TABLE ProdutoPedido (
   PRIMARY KEY (produtoId, pedidoId),
   FOREIGN KEY (produtoId) REFERENCES Produto(id),
   FOREIGN KEY (pedidoId) REFERENCES Pedido(id),
-  CHECK (quantidade > 0)
+  CONSTRAINT precoVendaProdutoMaiorQueZero CHECK (precoVendaProduto > 0),
+  CONSTRAINT quantidadeMaiorQueZero CHECK (quantidade > 0)
 );
