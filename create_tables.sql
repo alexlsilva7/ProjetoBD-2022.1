@@ -29,7 +29,7 @@ CREATE TABLE Produto (
 );
 
 CREATE TABLE TraducaoProduto (
-  produtoId INT UNSIG NED NOT NULL,
+  produtoId INT UNSIGNED NOT NULL,
   idioma VARCHAR(10) NOT NULL,
   nome VARCHAR(255) NOT NULL,
   descricao VARCHAR(255) NOT NULL,
