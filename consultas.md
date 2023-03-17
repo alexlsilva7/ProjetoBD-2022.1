@@ -246,8 +246,7 @@ FROM
 WHERE
     (prod.precoVenda - prod.precoVendaMin) < 500;
 ```
-## 10. Para cada compra realizada em 2018, 2019 ou 2022, listar: a data da compra, o valor total da compra, o modo da compra, a quantidade de produtos vendidos e o nome e o valor de
-crédito do cliente que realizou a compra.
+## 10. Para cada compra realizada em 2018, 2019 ou 2022, listar: a data da compra, o valor total da compra, o modo da compra, a quantidade de produtos vendidos e o nome e o valor de crédito do cliente que realizou a compra.
 ```sql
 SELECT
   p.data AS dataCompra,
