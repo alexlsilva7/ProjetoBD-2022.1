@@ -1,7 +1,7 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:projeto_bd/app/core/components/drawer/drawer_item.dart';
 import 'package:projeto_bd/app/core/controller/app_controller.dart';
-import 'package:projeto_bd/app/core/helpers/theme_helper.dart';
 import 'package:provider/provider.dart';
 
 class MainDrawer extends StatefulWidget {
@@ -38,19 +38,22 @@ class _MainDrawerState extends State<MainDrawer> {
                 Positioned(
                   top: 10,
                   right: 10,
-                  child:
-                      Consumer<ThemeHelper>(builder: (context, themeHelper, _) {
-                    return IconButton(
-                      icon: Icon(themeHelper.darkMode
-                          ? Icons.light_mode
-                          : Icons.dark_mode),
-                      onPressed: () {
-                        setState(() {
-                          themeHelper.changeTheme();
-                        });
-                      },
-                    );
-                  }),
+                  child: ValueListenableBuilder(
+                      valueListenable:
+                          AdaptiveTheme.of(context).modeChangeNotifier,
+                      builder: (context, mode, _) {
+                        return IconButton(
+                          icon: Icon(
+                              mode.isDark ? Icons.light_mode : Icons.dark_mode),
+                          onPressed: () {
+                            if (mode.isDark) {
+                              AdaptiveTheme.of(context).setLight();
+                            } else {
+                              AdaptiveTheme.of(context).setDark();
+                            }
+                          },
+                        );
+                      }),
                 ),
               ],
             ),
