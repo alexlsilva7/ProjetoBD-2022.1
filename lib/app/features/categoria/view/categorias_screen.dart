@@ -46,7 +46,8 @@ class _CategoriasScreenState extends State<CategoriasScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: const MainDrawer(routeName: '/categorias'),
+      drawer:
+          MediaQuery.of(context).size.width <= 500 ? const MainDrawer() : null,
       appBar: AppBar(
         title: const Text('Categorias'),
         actions: [

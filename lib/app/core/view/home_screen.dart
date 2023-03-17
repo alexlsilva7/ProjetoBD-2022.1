@@ -99,10 +99,11 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: const MainDrawer(routeName: '/home'),
       appBar: AppBar(
-        title: const Text('Projeto BD - Home'),
+        title: const Text('Home'),
       ),
+      drawer:
+          MediaQuery.of(context).size.width <= 500 ? const MainDrawer() : null,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10),
         child: SizedBox(

@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:projeto_bd/app/core/view/main_screen.dart';
 
 class DrawerItem extends StatelessWidget {
   final IconData icon;
   final String title;
-  final String routeName;
   final bool isSelected;
+  final Function()? onTap;
 
   const DrawerItem({
     super.key,
     required this.icon,
     required this.title,
-    required this.routeName,
     this.isSelected = false,
+    this.onTap,
   });
 
   @override
@@ -20,9 +21,7 @@ class DrawerItem extends StatelessWidget {
       selected: isSelected,
       leading: Icon(icon),
       title: Text(title),
-      onTap: () {
-        Navigator.of(context).pushReplacementNamed(routeName);
-      },
+      onTap: onTap,
     );
   }
 }

@@ -45,7 +45,8 @@ class _FornecedoresScreenState extends State<FornecedoresScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: const MainDrawer(routeName: '/fornecedores'),
+      drawer:
+          MediaQuery.of(context).size.width <= 500 ? const MainDrawer() : null,
       appBar: AppBar(
         title: const Text('Fornecedores'),
         actions: [
