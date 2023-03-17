@@ -55,7 +55,7 @@ FROM
 ```
 ## 3. Listar o nome completo e a cidade dos clientes chineses que realizaram um valor total de compras superior a 13 mil em cada um dos seguintes anos: 2022, 2021 e 2015.
 ```sql
-SELECT
+(SELECT
   c.nome AS nomeCliente,
   c.cidade AS cidadeCliente,
   SUM(pp.precoVendaProduto * pp.quantidade) AS valorTotalCompras,
@@ -68,11 +68,59 @@ WHERE
     c.pais = 'China' AND
     c.id = p.clienteId AND
     p.id = pp.pedidoId AND
-    YEAR(p.data) IN (2022, 2021, 2015)
+    YEAR(p.data) IN (2022)
 GROUP BY
     nomeCliente,
     cidadeCliente,
     ano
+HAVING
+    valorTotalCompras > 13000)
+
+union
+
+(SELECT
+  c.nome AS nomeCliente,
+  c.cidade AS cidadeCliente,
+  SUM(pp.precoVendaProduto * pp.quantidade) AS valorTotalCompras,
+  YEAR(p.data) AS ano
+FROM
+    Cliente c,
+    Pedido p,
+    ProdutoPedido pp
+WHERE
+    c.pais = 'China' AND
+    c.id = p.clienteId AND
+    p.id = pp.pedidoId AND
+    YEAR(p.data) IN (2021)
+GROUP BY
+    nomeCliente,
+    cidadeCliente,
+    ano
+HAVING
+    valorTotalCompras > 13000)
+    
+union
+
+(SELECT
+  c.nome AS nomeCliente,
+  c.cidade AS cidadeCliente,
+  SUM(pp.precoVendaProduto * pp.quantidade) AS valorTotalCompras,
+  YEAR(p.data) AS ano
+FROM
+    Cliente c,
+    Pedido p,
+    ProdutoPedido pp
+WHERE
+    c.pais = 'China' AND
+    c.id = p.clienteId AND
+    p.id = pp.pedidoId AND
+    YEAR(p.data) IN (2015)
+GROUP BY
+    nomeCliente,
+    cidadeCliente,
+    ano
+HAVING
+    valorTotalCompras > 13000)
 ```
 ## 4. Que meses foram mais rentáveis para a empresa nos anos de 2022 e 2021?
 ```sql
