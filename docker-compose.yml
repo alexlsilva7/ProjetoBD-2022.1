@@ -1,0 +1,37 @@
+version: '3'
+services:
+  db:
+    image: mysql:8.0.32
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_DATABASE: projeto-bd
+      MYSQL_USER: projeto_user
+      MYSQL_PASSWORD: projeto_pass
+      MYSQL_ROOT_PASSWORD: root_pass
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./dbdata:/var/lib/mysql
+    networks:
+      - projeto-bd-network
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
+    depends_on:
+      - db
+    networks:
+      - projeto-bd-network
+
+volumes:
+  dbdata:
+
+networks:
+  projeto-bd-network:
+    driver: bridge
+  

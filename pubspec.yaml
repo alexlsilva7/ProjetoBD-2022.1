@@ -1,0 +1,25 @@
+name: projeto_bd
+description: A new Flutter project.
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: '>=2.19.0 <3.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  mysql1: ^0.20.0
+  mysql_client: ^0.0.27
+  faker: ^2.1.0
+  faker_dart: ^0.1.11
+  intl: ^0.18.0
+  select_dialog: ^2.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+flutter:
+  uses-material-design: true
