@@ -166,6 +166,8 @@ class _ClientesScreenState extends State<ClientesScreen> {
                       final cliente = _clientes[index];
                       return Card(
                         child: ListTile(
+                          leading:
+                              const CircleAvatar(child: Icon(Icons.person)),
                           onTap: () => Navigator.of(context)
                               .pushNamed('/edit-cliente', arguments: cliente.id)
                               .then((_) => _loadClientes()),

@@ -162,6 +162,7 @@ class _CategoriasScreenState extends State<CategoriasScreen> {
                   },
                   child: Card(
                     child: ListTile(
+                      leading: const CircleAvatar(child: Icon(Icons.category)),
                       title: Text(categoria.nome),
                       subtitle: Text(categoria.descricao),
                     ),

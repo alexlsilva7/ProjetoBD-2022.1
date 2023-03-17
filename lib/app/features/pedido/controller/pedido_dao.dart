@@ -35,6 +35,16 @@ class PedidoDao {
     return pedidos;
   }
 
+  static Future<List<dynamic>> getIdsWhereProdutoPedidoIsNull() async {
+    final conn = await DbHelper.getConnection();
+    final results = await conn.query(
+      'SELECT id FROM Pedido WHERE id NOT IN (SELECT pedidoId FROM ProdutoPedido)',
+    );
+    final ids = results.map((row) => row['id']).toList();
+    await conn.close();
+    return ids;
+  }
+
   static Future<int?> addPedido(Pedido pedido) async {
     final conn = await DbHelper.getConnection();
     final result = await conn.query(
@@ -201,11 +211,11 @@ class PedidoDao {
       );
     }
     onProgress('Obtendo pedidos');
-    final pedidos = await PedidoDao.getPedidos();
+    final pedidosIds = await PedidoDao.getIdsWhereProdutoPedidoIsNull();
     onProgress('Obtendo produtos');
     final produtos = await ProdutoDao.getProdutos();
     int index = 1;
-    for (var pedido in pedidos) {
+    for (var pedidoId in pedidosIds) {
       List<Produto> produtosPedido = [];
       final quantidadeProdutos = faker.datatype.number(min: 1, max: 5);
       for (var i = 0; i < quantidadeProdutos; i++) {
@@ -232,7 +242,7 @@ class PedidoDao {
         await conn.query(
           'INSERT INTO ProdutoPedido (pedidoId, produtoId, quantidade, precoVendaProduto) VALUES (?, ?, ?, ?)',
           [
-            pedido.id,
+            pedidoId,
             produto.id,
             quantidade,
             produto.precoVenda,

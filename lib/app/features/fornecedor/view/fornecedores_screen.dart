@@ -170,6 +170,7 @@ class _FornecedoresScreenState extends State<FornecedoresScreen> {
                   },
                   child: Card(
                     child: ListTile(
+                      leading: const CircleAvatar(child: Icon(Icons.people)),
                       title: Text(fornecedor.nome),
                       subtitle: Text(fornecedor.documento),
                     ),

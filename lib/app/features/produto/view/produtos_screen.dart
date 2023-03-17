@@ -158,6 +158,9 @@ class _ProdutosScreenState extends State<ProdutosScreen> {
                 final produto = _produtos[index];
                 return Card(
                   child: ListTile(
+                    leading: const CircleAvatar(
+                      child: Icon(Icons.shopping_bag_rounded),
+                    ),
                     title: Text(produto.nome),
                     subtitle: Text(produto.descricao),
                     trailing: Text('${produto.precoVenda}'),

@@ -159,12 +159,16 @@ class _ArmazensScreenState extends State<ArmazensScreen> {
                     itemCount: _armazens.length,
                     itemBuilder: (context, index) {
                       final armazem = _armazens[index];
-                      return ListTile(
-                          title: Text(armazem.nome),
-                          subtitle: Text(armazem.endereco),
-                          onTap: () => Navigator.of(context)
-                              .pushNamed('/edit-armazem', arguments: armazem)
-                              .then((value) => _loadArmazens()));
+                      return Card(
+                        child: ListTile(
+                            leading:
+                                const CircleAvatar(child: Icon(Icons.store)),
+                            title: Text(armazem.nome),
+                            subtitle: Text(armazem.endereco),
+                            onTap: () => Navigator.of(context)
+                                .pushNamed('/edit-armazem', arguments: armazem)
+                                .then((value) => _loadArmazens())),
+                      );
                     },
                   ),
                 ),

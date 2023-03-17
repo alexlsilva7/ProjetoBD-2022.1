@@ -150,7 +150,7 @@ class ProdutoDao {
 
     final conn = await DbHelper.getConnection();
     for (int i = 0; i < quantidade; i++) {
-      onProgress('Inserindo produto $i de $quantidade...');
+      onProgress('Inserindo produto ${i + 1} de $quantidade...');
       await conn.query(
         'INSERT INTO Produto (nome, descricao, dataGarantia, status, precoCusto, precoVenda, precoVendaMin, fornecedorId) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
         [
@@ -168,37 +168,54 @@ class ProdutoDao {
     }
 
     final produtos = await getProdutos();
+
     if (categoriasIds.isNotEmpty) {
       for (var i = 0; i < produtos.length; i++) {
-        final produto = produtos[i];
-        onProgress(
-            'Inserindo categorias do produto $i de ${produtos.length}...');
-        final quantidadeCategorias = faker.datatype.number(
-            min: 1, max: categoriasIds.length > 3 ? 3 : categoriasIds.length);
-        var categoriasIdsCopia = [...categoriasIds];
-        for (int i = 0; i < quantidadeCategorias; i++) {
-          final categoriaId = categoriasIdsCopia.removeAt(faker.datatype
-              .number(min: 0, max: categoriasIdsCopia.length - 1));
-          await conn.query(
-            'INSERT INTO ProdutoCategoria (produtoId, categoriaId) VALUES (?, ?)',
-            [produto.id, categoriaId],
-          );
+        try {
+          final produto = await getProduto(produtos[i].id);
+          if (produto!.categorias != null && produto.categorias!.isNotEmpty) {
+            continue;
+          }
+        } catch (e) {
+          final produto = produtos[i];
+          onProgress(
+              'Inserindo categorias do produto ${i + 1} de ${produtos.length}...');
+          final quantidadeCategorias = faker.datatype.number(
+              min: 1, max: categoriasIds.length > 3 ? 3 : categoriasIds.length);
+          var categoriasIdsCopia = [...categoriasIds];
+          for (int i = 0; i < quantidadeCategorias; i++) {
+            final categoriaId = categoriasIdsCopia.removeAt(faker.datatype
+                .number(min: 0, max: categoriasIdsCopia.length - 1));
+            await conn.query(
+              'INSERT INTO ProdutoCategoria (produtoId, categoriaId) VALUES (?, ?)',
+              [produto.id, categoriaId],
+            );
+          }
         }
       }
     }
 
     //criar estoque para o produto
     for (var i = 0; i < produtos.length; i++) {
-      onProgress('Inserindo estoque do produto $i de ${produtos.length}...');
-      await conn.query(
-        'INSERT INTO Estoque (codigo, quantidade, armazemId, produtoId) VALUES (?, ?, ?, ?)',
-        [
-          faker.address.zipCode(),
-          faker.datatype.number(min: 1, max: 100),
-          armazens[faker.datatype.number(min: 0, max: armazens.length - 1)].id,
-          produtos[i].id,
-        ],
-      );
+      try {
+        final produto = await getProduto(produtos[i].id);
+        if (produto!.estoque != null) {
+          continue;
+        }
+      } catch (e) {
+        onProgress(
+            'Inserindo estoque do produto ${i + 1} de ${produtos.length}');
+        await conn.query(
+          'INSERT INTO Estoque (codigo, quantidade, armazemId, produtoId) VALUES (?, ?, ?, ?)',
+          [
+            faker.address.zipCode(),
+            faker.datatype.number(min: 1, max: 100),
+            armazens[faker.datatype.number(min: 0, max: armazens.length - 1)]
+                .id,
+            produtos[i].id,
+          ],
+        );
+      }
     }
 
     final idiomas = [
@@ -215,8 +232,12 @@ class ProdutoDao {
       'zh_TW',
     ];
     for (var i = 0; i < produtos.length; i++) {
-      final produto = produtos[i];
-      onProgress('Inserindo tradução do produto $i de ${produtos.length}...');
+      final produto = await getProduto(produtos[i].id);
+      if (produto!.traducoes != null && produto.traducoes!.isNotEmpty) {
+        continue;
+      }
+      onProgress(
+          'Inserindo tradução do produto ${i + 1} de ${produtos.length}...');
       final numeroTraducoes = faker.datatype.number(min: 1, max: 6);
       var idiomasCopia = [...idiomas];
       for (int i = 0; i < numeroTraducoes; i++) {

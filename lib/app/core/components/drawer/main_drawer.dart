@@ -60,7 +60,7 @@ class MainDrawer extends StatelessWidget {
             isSelected: routeName == '/produtos' ? true : false,
           ),
           DrawerItem(
-            icon: Icons.shopping_cart,
+            icon: Icons.people,
             title: 'Fornecedores',
             routeName: '/fornecedores',
             isSelected: routeName == '/fornecedores' ? true : false,
