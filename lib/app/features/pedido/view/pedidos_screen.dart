@@ -178,7 +178,7 @@ class _PedidosScreenState extends State<PedidosScreen> {
                                     ? 'Em Transporte'
                                     : 'Pagamento Confirmado'),
                     leading: const CircleAvatar(
-                      child: Icon(Icons.shopping_cart),
+                      child: Icon(Icons.list),
                     ),
                     onTap: () async {
                       Navigator.of(context)

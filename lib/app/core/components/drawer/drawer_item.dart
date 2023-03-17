@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:projeto_bd/app/core/view/main_screen.dart';
 
 class DrawerItem extends StatelessWidget {
   final IconData icon;

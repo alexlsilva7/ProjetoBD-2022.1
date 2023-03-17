@@ -25,12 +25,7 @@ class _MainScreenState extends State<MainScreen> {
         children: [
           MediaQuery.of(context).size.width > 500
               ? Consumer<AppController>(builder: (context, appController, _) {
-                  return MainNavigationRail(
-                    selectedIndex: appController.selectedIndex,
-                    onSelected: (index) {
-                      appController.selectedIndex = index;
-                    },
-                  );
+                  return const MainNavigationRail();
                 })
               : const SizedBox.shrink(),
           const VerticalDivider(thickness: 1, width: 1),

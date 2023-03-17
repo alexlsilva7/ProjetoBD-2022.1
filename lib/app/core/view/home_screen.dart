@@ -98,6 +98,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final iconColor = Theme.of(context).colorScheme.primary;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Home'),
@@ -125,45 +126,69 @@ class _HomeScreenState extends State<HomeScreen> {
                                   child: ListTile(
                                     title: Text(
                                         'Produtos Cadastrados: $quantidadeProdutos'),
-                                    leading: const Icon(Icons.shopping_bag),
+                                    leading: Icon(
+                                      Icons.shopping_bag,
+                                      color: iconColor,
+                                    ),
                                   ),
                                 ),
                                 IconButton(
                                     onPressed: () {
                                       _loadAllStats(isRefresh: true);
                                     },
-                                    icon: const Icon(Icons.refresh))
+                                    icon: Icon(
+                                      Icons.refresh,
+                                      color: iconColor,
+                                    ))
                               ],
                             ),
                             ListTile(
                               title: Text(
                                   'Fornecedores Cadastrados: $quantidadeFornecedores'),
-                              leading: const Icon(Icons.shopping_cart),
+                              leading: Icon(
+                                Icons.shopping_cart,
+                                color: iconColor,
+                              ),
                             ),
                             ListTile(
                               title: Text(
                                   'Categorias Cadastradas: $quantidadeCategorias'),
-                              leading: const Icon(Icons.category),
+                              leading: Icon(
+                                Icons.category,
+                                color: iconColor,
+                              ),
                             ),
                             ListTile(
                               title: Text(
                                   'Armazens Cadastrados: $quantidadeArmazens'),
-                              leading: const Icon(Icons.store),
+                              leading: Icon(
+                                Icons.store,
+                                color: iconColor,
+                              ),
                             ),
                             ListTile(
                               title: Text(
                                   'Estoques Cadastrados: $quantidadeEstoques'),
-                              leading: const Icon(Icons.storage),
+                              leading: Icon(
+                                Icons.storage,
+                                color: iconColor,
+                              ),
                             ),
                             ListTile(
                               title: Text(
                                   'Clientes Cadastrados: $quantidadeClientes'),
-                              leading: const Icon(Icons.person),
+                              leading: Icon(
+                                Icons.person,
+                                color: iconColor,
+                              ),
                             ),
                             ListTile(
                               title: Text(
                                   'Pedidos Cadastrados: $quantidadePedidos'),
-                              leading: const Icon(Icons.list_alt_rounded),
+                              leading: Icon(
+                                Icons.list_alt_rounded,
+                                color: iconColor,
+                              ),
                             ),
                           ],
                         ),
