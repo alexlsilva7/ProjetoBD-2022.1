@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:projeto_bd/app/features/consultas/controller/consultas_controller.dart';
+import 'package:projeto_bd/app/features/consultas/view/components/data_source_data_table.dart';
 
 class Consulta1Screen extends StatefulWidget {
   const Consulta1Screen({super.key});
@@ -40,11 +41,22 @@ class _Consulta1ScreenState extends State<Consulta1Screen> {
                   setState(() {
                     _isLoading = true;
                   });
-                  final rows = await _controller.getConsulta1();
-                  setState(() {
-                    _rows = rows;
-                    _isLoading = false;
-                  });
+                  try {
+                    final rows = await _controller.getConsulta1();
+                    setState(() {
+                      _rows = rows;
+                      _isLoading = false;
+                    });
+                  } catch (e) {
+                    setState(() {
+                      _isLoading = false;
+                    });
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Erro ao executar a consulta: $e'),
+                      ),
+                    );
+                  }
                 },
                 child: const Text('Executar consulta'),
               ),
@@ -70,7 +82,7 @@ class _Consulta1ScreenState extends State<Consulta1Screen> {
                               ],
                               showFirstLastButtons: true,
                               rowsPerPage: 20,
-                              source: _DataTableSource(_rows!),
+                              source: DataTableSourceImp(_rows!),
                             ),
                           ],
                         ),
@@ -87,28 +99,4 @@ class _Consulta1ScreenState extends State<Consulta1Screen> {
       ),
     );
   }
-}
-
-class _DataTableSource extends DataTableSource {
-  final List<Map<String, dynamic>> _rows;
-
-  _DataTableSource(this._rows);
-
-  @override
-  DataRow getRow(int index) {
-    final row = _rows[index];
-    return DataRow.byIndex(
-      index: index,
-      cells: [...row.values.map((e) => DataCell(Text(e.toString()))).toList()],
-    );
-  }
-
-  @override
-  bool get isRowCountApproximate => false;
-
-  @override
-  int get rowCount => _rows.length;
-
-  @override
-  int get selectedRowCount => 0;
 }
