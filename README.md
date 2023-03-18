@@ -44,6 +44,11 @@ Implementar um programa com interface gráfica para apresentar os resultados das
 ### Execução
 
 - Ter o [Flutter](https://flutter.dev/) instalado;
+- Configurar o ambiente de desenvolvimento para o sistema operacional desejado;
+    - [Windows](https://docs.flutter.dev/get-started/install/windows#additional-windows-requirements)
+        - Instalar o [Visual Studio](https://docs.flutter.dev/get-started/install/windows#additional-windows-requirements) com o pacote de desenvolvimento para desktop com C++;
+    - [Linux](https://docs.flutter.dev/get-started/install/linux#additional-linux-requirements)
+        - Executar no terminal (para sistemas baseados no Ubuntu): `sudo apt-get install clang cmake ninja-build pkg-config libgtk-3-dev liblzma-dev`
 - Instalar as dependências do projeto: `flutter pub get`
 - Executar o projeto: `flutter run -d windows` ou `flutter run -d linux`;
 
@@ -53,5 +58,5 @@ Em breve
 
 ## Seminário
 
-Tema: "Transações em Banco de Dados"
-Slides: Em breve
+- Tema: "Transações em Banco de Dados"
+- Slides: Em breve
