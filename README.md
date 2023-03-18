@@ -32,6 +32,7 @@ Implementar um programa com interface gráfica para apresentar os resultados das
 - Criar o banco de dados `projeto-bd`:
 - Selecionar o banco de dados `projeto-bd`:
 - Executar o script [create_tables_and_populate.sql](docs/sql/create_tables_and_populate.sql) para criar as tabelas e popular o banco de dados com dados de exemplo.
+- Alterar as credenciais de acesso ao banco de dados no arquivo [db_helper.dart](lib/app/core/helpers/db_helper.dart)
 
 ## Seminário
 
