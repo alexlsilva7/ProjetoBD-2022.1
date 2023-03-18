@@ -17,6 +17,7 @@ dependencies:
   select_dialog: ^2.0.0
   provider: ^6.0.5
   adaptive_theme: ^3.2.0
+  data_tables: ^1.4.0
   
 
 dev_dependencies:

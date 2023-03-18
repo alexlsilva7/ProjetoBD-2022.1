@@ -62,25 +62,15 @@ class _Consulta1ScreenState extends State<Consulta1Screen> {
                               style: Theme.of(context).textTheme.labelMedium,
                             ),
                             const SizedBox(height: 16),
-                            DataTable(
+                            PaginatedDataTable(
                               columns: [
                                 ..._rows!.first.keys
                                     .map((e) => DataColumn(label: Text(e)))
                                     .toList()
                               ],
-                              rows: [
-                                for (var row in _rows ?? [])
-                                  DataRow(
-                                    cells: [
-                                      ...row.values.map(
-                                          (e) => DataCell(Text(e.toString())))
-                                    ],
-                                  )
-                              ],
-                              headingRowColor: MaterialStateColor.resolveWith(
-                                  (states) => Theme.of(context)
-                                      .colorScheme
-                                      .primaryContainer),
+                              showFirstLastButtons: true,
+                              rowsPerPage: 20,
+                              source: _DataTableSource(_rows!),
                             ),
                           ],
                         ),
@@ -97,4 +87,28 @@ class _Consulta1ScreenState extends State<Consulta1Screen> {
       ),
     );
   }
+}
+
+class _DataTableSource extends DataTableSource {
+  final List<Map<String, dynamic>> _rows;
+
+  _DataTableSource(this._rows);
+
+  @override
+  DataRow getRow(int index) {
+    final row = _rows[index];
+    return DataRow.byIndex(
+      index: index,
+      cells: [...row.values.map((e) => DataCell(Text(e.toString()))).toList()],
+    );
+  }
+
+  @override
+  bool get isRowCountApproximate => false;
+
+  @override
+  int get rowCount => _rows.length;
+
+  @override
+  int get selectedRowCount => 0;
 }
