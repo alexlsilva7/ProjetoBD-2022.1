@@ -2,6 +2,13 @@
 
 Projeto da disciplina de Banco de Dados, do curso de Ciência da Computação da Universidade Federal do Agreste de Pernambuco (UFAPE), ministrada pelo professor Dimas Cassimiro do Nascimento Filho.
 
+## Equipe
+
+- [Alex Lopes](https://github.com/alexlsilva7)
+- [José Elias](https://github.com/Eliaz500)
+- [Guilherme Rutemberg](https://github.com/GuiSysLima)
+- [José Alves](https://github.com/IBORD)
+
 ## Documentação
 ### Requisitos do Projeto
 
@@ -12,7 +19,7 @@ O banco de dados deve armazenar informações de produtos, pedidos, clientes, es
 
 ### Modelo Lógico (Relacional)
 
-- [Modelo relacional simples](docs/Modelo_Relacional.pdf)
+- [Modelo Relacional](docs/Modelo_Relacional.pdf)
 
 ### Consultas do Projeto
 
@@ -33,6 +40,16 @@ Implementar um programa com interface gráfica para apresentar os resultados das
 - Selecionar o banco de dados `projeto-bd`:
 - Executar o script [create_tables_and_populate.sql](docs/sql/create_tables_and_populate.sql) para criar as tabelas e popular o banco de dados com dados de exemplo.
 - Alterar as credenciais de acesso ao banco de dados no arquivo [db_helper.dart](lib/app/core/helpers/db_helper.dart)
+
+### Execução
+
+- Ter o [Flutter](https://flutter.dev/) instalado;
+- Instalar as dependências do projeto: `flutter pub get`
+- Executar o projeto: `flutter run -d windows` ou `flutter run -d linux`;
+
+### Screenshots
+
+Em breve
 
 ## Seminário
 
