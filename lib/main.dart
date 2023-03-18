@@ -9,8 +9,9 @@ import 'package:projeto_bd/app/features/cliente/view/cliente_form.dart';
 import 'package:projeto_bd/app/features/consultas/view/consulta_1_screen.dart';
 import 'package:projeto_bd/app/features/fornecedor/model/fornecedor.dart';
 import 'package:projeto_bd/app/features/fornecedor/view/fornecedor_form.dart';
+import 'package:projeto_bd/app/features/pedido/view/pedido_screen.dart';
 import 'package:projeto_bd/app/features/produto/model/produto.dart';
-import 'package:projeto_bd/app/features/produto/view/produto_view.dart';
+import 'package:projeto_bd/app/features/produto/view/produto_screen.dart';
 import 'package:projeto_bd/app/features/produto/view/produto_form.dart';
 import 'package:provider/provider.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
@@ -61,7 +62,7 @@ class MainApp extends StatelessWidget {
               '/edit-categoria': (context) => CategoriaForm(
                   categoria:
                       ModalRoute.of(context)!.settings.arguments as Categoria),
-              '/produto-view': (context) => ProdutoView(
+              '/produto': (context) => ProdutoScreen(
                   id: ModalRoute.of(context)!.settings.arguments as int),
               '/add-armazem': (context) => const ArmazemForm(),
               '/edit-armazem': (context) => ArmazemForm(
@@ -71,6 +72,9 @@ class MainApp extends StatelessWidget {
               '/edit-cliente': (context) => ClienteForm(
                   clienteId: ModalRoute.of(context)!.settings.arguments as int),
               '/consulta1': (context) => const Consulta1Screen(),
+              '/pedido': (context) => PedidoScreen(
+                    id: ModalRoute.of(context)!.settings.arguments as int,
+                  ),
             },
             debugShowCheckedModeBanner: false,
             theme: theme,

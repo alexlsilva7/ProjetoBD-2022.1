@@ -167,7 +167,7 @@ class _ProdutosScreenState extends State<ProdutosScreen> {
                     trailing: Text('${produto.precoVenda}'),
                     onTap: () {
                       Navigator.of(context)
-                          .pushNamed('/produto-view', arguments: produto.id)
+                          .pushNamed('/produto', arguments: produto.id)
                           .then((_) => _loadProdutos());
                     },
                     onLongPress: () async {

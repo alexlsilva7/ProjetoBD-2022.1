@@ -110,7 +110,7 @@ class PedidoDao {
     final pedidos = results
         .map((row) => Pedido(
               id: row['id'],
-              data: DateTime.parse(row['data']).toLocal(),
+              data: row['data'],
               modoEncomenda: row['modoEncomenda'] == 'Retirada'
                   ? ModoEncomenda.Retirada
                   : ModoEncomenda.Entrega,
@@ -123,7 +123,7 @@ class PedidoDao {
                           : row['status'] == 'Aguardando pagamento'
                               ? Status.aguardandoPagamento
                               : Status.pagamentoConfirmado,
-              prazoEntrega: DateTime.parse(row['prazoEntrega']).toLocal(),
+              prazoEntrega: row['prazoEntrega'],
               clienteId: row['clienteId'],
             ))
         .toList();

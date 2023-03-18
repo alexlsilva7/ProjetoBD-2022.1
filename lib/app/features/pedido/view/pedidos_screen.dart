@@ -184,7 +184,7 @@ class _PedidosScreenState extends State<PedidosScreen> {
                       Navigator.of(context)
                           .pushNamed(
                             '/pedido',
-                            arguments: pedido,
+                            arguments: pedido.id,
                           )
                           .then((value) => _loadPedidos());
                     },
