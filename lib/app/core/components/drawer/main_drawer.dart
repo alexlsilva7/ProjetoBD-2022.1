@@ -120,6 +120,15 @@ class _MainDrawerState extends State<MainDrawer> {
               },
               isSelected: appController.selectedIndex == 6 ? true : false,
             ),
+            DrawerItem(
+              icon: Icons.search,
+              title: 'Consultas',
+              onTap: () {
+                appController.selectedIndex = 7;
+                Navigator.of(context).pop();
+              },
+              isSelected: appController.selectedIndex == 7 ? true : false,
+            ),
           ],
         ),
       );

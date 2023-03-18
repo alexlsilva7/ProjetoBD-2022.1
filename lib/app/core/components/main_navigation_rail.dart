@@ -96,6 +96,11 @@ class _MainNavigationRailState extends State<MainNavigationRail> {
               selectedIcon: Icon(Icons.list),
               label: Text('Pedidos'),
             ),
+            NavigationRailDestination(
+              icon: Icon(Icons.search),
+              selectedIcon: Icon(Icons.search),
+              label: Text('Consultas'),
+            ),
           ],
         );
       },

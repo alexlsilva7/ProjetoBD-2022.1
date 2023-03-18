@@ -5,6 +5,7 @@ import 'package:projeto_bd/app/core/view/home_screen.dart';
 import 'package:projeto_bd/app/features/armazem/view/armazens_screen.dart';
 import 'package:projeto_bd/app/features/categoria/view/categorias_screen.dart';
 import 'package:projeto_bd/app/features/cliente/view/clientes_screen.dart';
+import 'package:projeto_bd/app/features/consultas/view/consultas_screen.dart';
 import 'package:projeto_bd/app/features/fornecedor/view/fornecedores_screen.dart';
 import 'package:projeto_bd/app/features/pedido/view/pedidos_screen.dart';
 import 'package:projeto_bd/app/features/produto/view/produtos_screen.dart';
@@ -42,6 +43,7 @@ class _MainScreenState extends State<MainScreen> {
                   ArmazensScreen(),
                   ClientesScreen(),
                   PedidosScreen(),
+                  ConsultasScreen(),
                 ],
               );
             }),
