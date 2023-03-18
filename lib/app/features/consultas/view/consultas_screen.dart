@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:projeto_bd/app/core/components/drawer/main_drawer.dart';
-import 'package:projeto_bd/app/features/consultas/controller/consultas_controller.dart';
 import 'package:projeto_bd/app/features/consultas/view/components/consulta_list_tile.dart';
 
 class ConsultasScreen extends StatefulWidget {
@@ -11,12 +10,6 @@ class ConsultasScreen extends StatefulWidget {
 }
 
 class _ConsultasScreenState extends State<ConsultasScreen> {
-  final ConsultasController _controller = ConsultasController();
-
-  List<Map<String, dynamic>>? _rows;
-
-  final bool _isLoading = false;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
