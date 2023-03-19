@@ -56,11 +56,11 @@ class _PedidosScreenState extends State<PedidosScreen> {
             itemBuilder: (context) => [
               const PopupMenuItem(
                 value: 'seed',
-                child: Text('Seed'),
+                child: Text('Popular'),
               ),
               const PopupMenuItem(
                 value: 'clear',
-                child: Text('DROP *'),
+                child: Text('Limpar dados'),
               ),
             ],
             onSelected: (value) async {
