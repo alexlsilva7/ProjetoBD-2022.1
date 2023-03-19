@@ -49,9 +49,7 @@ class _PedidoScreenState extends State<PedidoScreen> {
           IconButton(
             icon: const Icon(Icons.edit),
             onPressed: () {
-              // Navigator.of(context)
-              //     .pushNamed('/edit-product', arguments: produto)
-              //     .then((_) => _loadProduto());
+              Navigator.pushNamed(context, '/edit-pedido', arguments: pedido);
             },
           ),
           //delete

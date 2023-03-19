@@ -9,6 +9,8 @@ import 'package:projeto_bd/app/features/cliente/view/cliente_form.dart';
 import 'package:projeto_bd/app/features/consultas/view/consulta_1_screen.dart';
 import 'package:projeto_bd/app/features/fornecedor/model/fornecedor.dart';
 import 'package:projeto_bd/app/features/fornecedor/view/fornecedor_form.dart';
+import 'package:projeto_bd/app/features/pedido/model/pedido.dart';
+import 'package:projeto_bd/app/features/pedido/view/pedido_form.dart';
 import 'package:projeto_bd/app/features/pedido/view/pedido_screen.dart';
 import 'package:projeto_bd/app/features/produto/model/produto.dart';
 import 'package:projeto_bd/app/features/produto/view/produto_screen.dart';
@@ -39,6 +41,11 @@ class MainApp extends StatelessWidget {
           brightness: Brightness.light,
           useMaterial3: true,
           primarySwatch: Colors.deepPurple,
+          inputDecorationTheme: InputDecorationTheme(
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
         ),
         dark: ThemeData(
           brightness: Brightness.dark,
@@ -74,6 +81,11 @@ class MainApp extends StatelessWidget {
               '/consulta1': (context) => const Consulta1Screen(),
               '/pedido': (context) => PedidoScreen(
                     id: ModalRoute.of(context)!.settings.arguments as int,
+                  ),
+              '/add-pedido': (context) => const PedidoForm(),
+              '/edit-pedido': (context) => PedidoForm(
+                    pedido:
+                        ModalRoute.of(context)!.settings.arguments as Pedido,
                   ),
             },
             debugShowCheckedModeBanner: false,
