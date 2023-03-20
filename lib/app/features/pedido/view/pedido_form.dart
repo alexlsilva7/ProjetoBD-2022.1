@@ -36,7 +36,7 @@ class _PedidoFormState extends State<PedidoForm> {
 
   Future<void> _loadClientes() async {
     clientes = await ClienteDao.getClientes();
-    if (_pedido.clienteId != 0) {
+    if (_pedido.clienteId != -1) {
       setState(() {
         _cliente = clientes.firstWhere((cliente) {
           return cliente.id == _pedido.clienteId;
@@ -54,8 +54,6 @@ class _PedidoFormState extends State<PedidoForm> {
   @override
   void initState() {
     super.initState();
-    _loadClientes();
-    _loadProdutos();
     _isEditing = widget.pedido != null;
     _pedido = widget.pedido != null
         ? widget.pedido!.copyWith()
@@ -68,6 +66,8 @@ class _PedidoFormState extends State<PedidoForm> {
             clienteId: -1,
             produtosPedido: [],
           );
+    _loadClientes();
+    _loadProdutos();
   }
 
   @override
