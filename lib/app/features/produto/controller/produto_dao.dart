@@ -67,6 +67,13 @@ class ProdutoDao {
         produto.id
       ],
     );
+
+    //update estoque
+    await conn.query(
+      'UPDATE Estoque SET quantidade = ? WHERE produtoId = ?',
+      [produto.estoque!.quantidade, produto.id],
+    );
+
     final rowsAffected = result.affectedRows;
     await conn.close();
     return rowsAffected;

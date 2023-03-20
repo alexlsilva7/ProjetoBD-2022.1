@@ -127,7 +127,61 @@ class _ProdutoScreenState extends State<ProdutoScreen> {
                         ),
                         ElevatedButton(
                             onPressed: () {
-                              //TODO Alterar quantidade
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: const Text('Alterar quantidade'),
+                                    content: Form(
+                                      key: _formKey,
+                                      child: TextFormField(
+                                        keyboardType: TextInputType.number,
+                                        initialValue: produto!
+                                            .estoque!.quantidade
+                                            .toString(),
+                                        decoration: const InputDecoration(
+                                          labelText: 'Quantidade',
+                                        ),
+                                        validator: (value) {
+                                          if (value == null ||
+                                              value.isEmpty ||
+                                              int.tryParse(value) == null) {
+                                            return 'Por favor, insira um número';
+                                          }
+                                          return null;
+                                        },
+                                        onSaved: (value) {
+                                          produto!.estoque = produto!.estoque!
+                                              .copyWith(
+                                                  quantidade:
+                                                      int.tryParse(value!));
+                                        },
+                                      ),
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: const Text('Cancelar'),
+                                      ),
+                                      TextButton(
+                                        onPressed: () async {
+                                          if (_formKey.currentState!
+                                              .validate()) {
+                                            _formKey.currentState!.save();
+                                            await ProdutoDao.updateProduto(
+                                                produto!);
+                                            Navigator.of(context).pop();
+                                            _loadProduto();
+                                          }
+                                        },
+                                        child: const Text('Alterar'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
                             },
                             child: const Text('Alterar Quantidade')),
                       ],
