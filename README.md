@@ -49,8 +49,8 @@ Implementar um programa com interface gráfica para apresentar os resultados das
         - Instalar o [Visual Studio](https://docs.flutter.dev/get-started/install/windows#additional-windows-requirements) com o pacote de desenvolvimento para desktop com C++;
     - [Linux](https://docs.flutter.dev/get-started/install/linux#additional-linux-requirements)
         - Executar no terminal (para sistemas baseados no Ubuntu): `sudo apt-get install clang cmake ninja-build pkg-config libgtk-3-dev liblzma-dev`
-- Instalar as dependências do projeto: `flutter pub get`
-- Executar o projeto: `flutter run -d windows` ou `flutter run -d linux`;
+- Instalar as dependências do projeto: `flutter pub get` (executar dentro da pasta do projeto)
+- Executar o projeto: `flutter run -d windows` ou `flutter run -d linux`; (executar dentro da pasta do projeto)
 
 ### Screenshots
 
