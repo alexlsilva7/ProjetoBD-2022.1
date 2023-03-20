@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:projeto_bd/app/features/cliente/controller/cliente_dao.dart';
 import 'package:projeto_bd/app/features/cliente/model/cliente.dart';
@@ -21,6 +23,8 @@ class _PedidoScreenState extends State<PedidoScreen> {
   List<Produto> produtos = [];
   double total = 0;
 
+  bool isLoading = false;
+
   @override
   void initState() {
     super.initState();
@@ -28,6 +32,14 @@ class _PedidoScreenState extends State<PedidoScreen> {
   }
 
   Future<void> _loadPedido() async {
+    setState(() {
+      isLoading = true;
+    });
+    this.pedido = null;
+    this.cliente = null;
+    produtos = [];
+    total = 0;
+
     final pedido = await PedidoDao.getPedido(widget.id);
     final cliente = await ClienteDao.getCliente(pedido!.clienteId);
     for (ProdutoPedido produtoPed in pedido.produtosPedido!) {
@@ -38,6 +50,7 @@ class _PedidoScreenState extends State<PedidoScreen> {
     setState(() {
       this.pedido = pedido;
       this.cliente = cliente;
+      isLoading = false;
     });
   }
 
@@ -49,7 +62,8 @@ class _PedidoScreenState extends State<PedidoScreen> {
           IconButton(
             icon: const Icon(Icons.edit),
             onPressed: () {
-              Navigator.pushNamed(context, '/edit-pedido', arguments: pedido);
+              Navigator.pushNamed(context, '/edit-pedido', arguments: pedido)
+                  .then((value) => _loadPedido());
             },
           ),
           //delete
@@ -70,7 +84,7 @@ class _PedidoScreenState extends State<PedidoScreen> {
           ),
         ],
       ),
-      body: pedido != null
+      body: !isLoading
           ? Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(

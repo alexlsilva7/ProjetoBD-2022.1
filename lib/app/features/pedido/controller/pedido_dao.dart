@@ -70,7 +70,7 @@ class PedidoDao {
     return id;
   }
 
-  static Future<int?> updatePedido(Pedido pedido) async {
+  static Future<int?> updatePedido(Pedido pedido, Pedido old) async {
     final conn = await DbHelper.getConnection();
     final result = await conn.query(
       'UPDATE Pedido SET data = ?, modoEncomenda = ?, status = ?, prazoEntrega = ?, clienteId = ? WHERE id = ?',
@@ -92,8 +92,36 @@ class PedidoDao {
       ],
     );
 
-    for (var produtoPedido in pedido.produtosPedido!) {
-      await ProdutoPedidoDAO.updateProdutoPedido(produtoPedido);
+    final oldProdutosPedido = old.produtosPedido;
+    final newProdutosPedido = pedido.produtosPedido;
+
+    for (var oldProdutoPedido in oldProdutosPedido!) {
+      var isItInNew = false;
+      for (var newProdutoPedido in newProdutosPedido!) {
+        if (oldProdutoPedido.produtoId == newProdutoPedido.produtoId) {
+          isItInNew = true;
+          if (oldProdutoPedido.quantidade != newProdutoPedido.quantidade) {
+            await ProdutoPedidoDAO.updateProdutoPedido(newProdutoPedido);
+          }
+          break;
+        }
+      }
+      if (!isItInNew) {
+        await ProdutoPedidoDAO.deleteProdutoPedido(oldProdutoPedido);
+      }
+    }
+
+    for (var newProdutoPedido in newProdutosPedido!) {
+      var isItInOld = false;
+      for (var oldProdutoPedido in oldProdutosPedido) {
+        if (oldProdutoPedido.produtoId == newProdutoPedido.produtoId) {
+          isItInOld = true;
+          break;
+        }
+      }
+      if (!isItInOld) {
+        await ProdutoPedidoDAO.addProdutoPedido(newProdutoPedido);
+      }
     }
 
     final rowsAffected = result.affectedRows;

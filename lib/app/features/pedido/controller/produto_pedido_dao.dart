@@ -23,6 +23,20 @@ class ProdutoPedidoDAO {
     return produtos;
   }
 
+  static Future<void> addProdutoPedido(ProdutoPedido produtoPedido) async {
+    final conn = await DbHelper.getConnection();
+    await conn.query(
+      'INSERT INTO ProdutoPedido (pedidoId, produtoId, quantidade, precoVendaProduto) VALUES (?, ?, ?, ?)',
+      [
+        produtoPedido.pedidoId,
+        produtoPedido.produtoId,
+        produtoPedido.quantidade,
+        produtoPedido.precoVendaProduto,
+      ],
+    );
+    await conn.close();
+  }
+
   static Future<void> updateProdutoPedido(ProdutoPedido produtoPedido) async {
     final conn = await DbHelper.getConnection();
     await conn.query(
@@ -33,6 +47,15 @@ class ProdutoPedidoDAO {
         produtoPedido.pedidoId,
         produtoPedido.produtoId,
       ],
+    );
+    await conn.close();
+  }
+
+  static Future<void> deleteProdutoPedido(ProdutoPedido produtoPedido) async {
+    final conn = await DbHelper.getConnection();
+    await conn.query(
+      'DELETE FROM ProdutoPedido WHERE pedidoId = ? AND produtoId = ?',
+      [produtoPedido.pedidoId, produtoPedido.produtoId],
     );
     await conn.close();
   }

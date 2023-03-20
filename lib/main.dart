@@ -12,6 +12,7 @@ import 'package:projeto_bd/app/features/fornecedor/view/fornecedor_form.dart';
 import 'package:projeto_bd/app/features/pedido/model/pedido.dart';
 import 'package:projeto_bd/app/features/pedido/view/pedido_form.dart';
 import 'package:projeto_bd/app/features/pedido/view/pedido_screen.dart';
+import 'package:projeto_bd/app/features/pedido/view/selecionar_produto_screen.dart';
 import 'package:projeto_bd/app/features/produto/model/produto.dart';
 import 'package:projeto_bd/app/features/produto/view/produto_screen.dart';
 import 'package:projeto_bd/app/features/produto/view/produto_form.dart';
@@ -51,6 +52,11 @@ class MainApp extends StatelessWidget {
           brightness: Brightness.dark,
           useMaterial3: true,
           primarySwatch: Colors.deepPurple,
+          inputDecorationTheme: InputDecorationTheme(
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
         ),
         initial: savedThemeMode ?? AdaptiveThemeMode.system,
         builder: (theme, darkTheme) {
@@ -87,6 +93,8 @@ class MainApp extends StatelessWidget {
                     pedido:
                         ModalRoute.of(context)!.settings.arguments as Pedido,
                   ),
+              '/selecionar-produto': (context) =>
+                  const SelecionaProdutoScreen(),
             },
             debugShowCheckedModeBanner: false,
             theme: theme,

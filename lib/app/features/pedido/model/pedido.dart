@@ -33,6 +33,11 @@ class Pedido {
     int? clienteId,
     List<ProdutoPedido>? produtosPedido,
   }) {
+    List<ProdutoPedido> produtosPedidoCopyWith = [];
+    final pList = produtosPedido ?? this.produtosPedido;
+    for (var p in pList!) {
+      produtosPedidoCopyWith.add(p.copyWith());
+    }
     return Pedido(
       id: id ?? this.id,
       data: data ?? this.data,
@@ -40,7 +45,7 @@ class Pedido {
       status: status ?? this.status,
       prazoEntrega: prazoEntrega ?? this.prazoEntrega,
       clienteId: clienteId ?? this.clienteId,
-      produtosPedido: produtosPedido ?? this.produtosPedido,
+      produtosPedido: produtosPedidoCopyWith,
     );
   }
 }

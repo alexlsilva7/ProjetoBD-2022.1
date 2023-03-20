@@ -1,9 +1,14 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:projeto_bd/app/features/cliente/controller/cliente_dao.dart';
 import 'package:projeto_bd/app/features/cliente/model/cliente.dart';
+import 'package:projeto_bd/app/features/pedido/controller/pedido_dao.dart';
 import 'package:projeto_bd/app/features/pedido/model/pedido.dart';
+import 'package:projeto_bd/app/features/pedido/model/produto_pedido.dart';
 import 'package:projeto_bd/app/features/pedido/view/selecionar_produto_screen.dart';
+import 'package:projeto_bd/app/features/produto/controller/produto_dao.dart';
 import 'package:projeto_bd/app/features/produto/model/produto.dart';
 import 'package:select_dialog/select_dialog.dart';
 
@@ -13,13 +18,17 @@ class PedidoForm extends StatefulWidget {
   const PedidoForm({Key? key, this.pedido}) : super(key: key);
 
   @override
-  _PedidoFormState createState() => _PedidoFormState();
+  State createState() => _PedidoFormState();
 }
 
 class _PedidoFormState extends State<PedidoForm> {
   final _formKey = GlobalKey<FormState>();
   late Pedido _pedido;
   late bool _isEditing;
+
+  bool _isSaving = false;
+
+  List<Produto> produtos = [];
 
   List<Cliente> clientes = [];
 
@@ -36,21 +45,29 @@ class _PedidoFormState extends State<PedidoForm> {
     }
   }
 
+  Future<void> _loadProdutos() async {
+    produtos = await ProdutoDao.getProdutos();
+
+    setState(() {});
+  }
+
   @override
   void initState() {
     super.initState();
     _loadClientes();
+    _loadProdutos();
     _isEditing = widget.pedido != null;
-    _pedido = widget.pedido ??
-        Pedido(
-          id: null,
-          data: DateTime.now(),
-          modoEncomenda: ModoEncomenda.Retirada,
-          status: Status.aguardandoPagamento,
-          prazoEntrega: DateTime.now().add(const Duration(days: 7)),
-          clienteId: 0,
-          produtosPedido: [],
-        );
+    _pedido = widget.pedido != null
+        ? widget.pedido!.copyWith()
+        : Pedido(
+            id: null,
+            data: DateTime.now(),
+            modoEncomenda: ModoEncomenda.Retirada,
+            status: Status.aguardandoPagamento,
+            prazoEntrega: DateTime.now().add(const Duration(days: 7)),
+            clienteId: -1,
+            produtosPedido: [],
+          );
   }
 
   @override
@@ -59,7 +76,7 @@ class _PedidoFormState extends State<PedidoForm> {
       appBar: AppBar(
         title: Text(_isEditing ? 'Editar Pedido' : 'Novo Pedido'),
       ),
-      body: SingleChildScrollView(
+      body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
@@ -80,10 +97,10 @@ class _PedidoFormState extends State<PedidoForm> {
                       onTap: () async {
                         final DateTime? date = await showDatePicker(
                           context: context,
-                          initialDate: _pedido.prazoEntrega,
-                          firstDate: DateTime.now(),
-                          lastDate:
-                              DateTime.now().add(const Duration(days: 365)),
+                          initialDate: _pedido.data,
+                          firstDate: DateTime(2006, 8),
+                          lastDate: DateTime.now()
+                              .add(const Duration(days: 365 * 10)),
                         );
                         if (date != null) {
                           setState(() {
@@ -108,9 +125,9 @@ class _PedidoFormState extends State<PedidoForm> {
                         final DateTime? date = await showDatePicker(
                           context: context,
                           initialDate: _pedido.prazoEntrega,
-                          firstDate: DateTime.now(),
-                          lastDate:
-                              DateTime.now().add(const Duration(days: 365)),
+                          firstDate: DateTime(2006, 8),
+                          lastDate: DateTime.now()
+                              .add(const Duration(days: 365 * 10)),
                         );
                         if (date != null) {
                           setState(() {
@@ -168,10 +185,9 @@ class _PedidoFormState extends State<PedidoForm> {
                 ],
               ),
               const SizedBox(height: 16),
-
-              const SizedBox(height: 16),
-              // select cliente
+              const Divider(),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text('Cliente: ${_cliente?.nome ?? 'Nenhum selecionado'}'),
                   const SizedBox(width: 16),
@@ -224,28 +240,181 @@ class _PedidoFormState extends State<PedidoForm> {
                       child: const Text('Selecionar Cliente')),
                 ],
               ),
-              const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: () async {
-                  final Produto produto = await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const SelecionaProdutoScreen(),
-                    ),
-                  );
-                  setState(() {});
-                },
-                child: const Text('Adicionar Produto'),
+              const Divider(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Produtos: ${_pedido.produtosPedido!.length} item(s)'),
+                  ElevatedButton(
+                    onPressed: () async {
+                      await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SelecionaProdutoScreen(),
+                        ),
+                      ).then((value) {
+                        if (value != null) {
+                          if (_pedido.produtosPedido!
+                              .where((element) => element.produtoId == value.id)
+                              .isEmpty) {
+                            _pedido.produtosPedido!.add(ProdutoPedido(
+                              produtoId: value.id!,
+                              pedidoId: _pedido.id,
+                              precoVendaProduto: value.precoVenda,
+                              quantidade: 1,
+                            ));
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Produto já adicionado'),
+                              ),
+                            );
+                          }
+                        }
+                      });
+                      setState(() {});
+                    },
+                    child: const Text('Adicionar Produto'),
+                  ),
+                ],
               ),
               const SizedBox(height: 16),
-              ElevatedButton(
-                child: const Text('Salvar'),
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    _formKey.currentState!.save();
-                    Navigator.of(context).pop(_pedido);
-                  }
-                },
+              if (produtos.isNotEmpty)
+                Expanded(
+                  child: ListView.builder(
+                    itemBuilder: (context, index) {
+                      final ProdutoPedido produtoPedido =
+                          _pedido.produtosPedido![index];
+                      final Produto produto = produtos.firstWhere(
+                          (element) => element.id == produtoPedido.produtoId);
+                      return Card(
+                        child: ListTile(
+                          title: Text(produto.nome),
+                          subtitle: Text(
+                            '${produtoPedido.quantidade} x ${produtoPedido.precoVendaProduto.toStringAsFixed(2)} = R\$ ${(produtoPedido.quantidade * produtoPedido.precoVendaProduto).toStringAsFixed(2)}',
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleSmall!
+                                .copyWith(
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
+                                ),
+                          ),
+                          //alterar quantidade with buttons, and cant be less than 1
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                icon: const Icon(Icons.remove),
+                                onPressed: () {
+                                  if (produtoPedido.quantidade > 1) {
+                                    setState(() {
+                                      _pedido.produtosPedido![index] = _pedido
+                                          .produtosPedido![index]
+                                          .copyWith(
+                                              quantidade:
+                                                  produtoPedido.quantidade - 1);
+                                    });
+                                  }
+                                },
+                              ),
+                              Text(produtoPedido.quantidade.toString()),
+                              IconButton(
+                                icon: const Icon(Icons.add),
+                                onPressed: () {
+                                  setState(() {
+                                    _pedido.produtosPedido![index] =
+                                        _pedido.produtosPedido![index].copyWith(
+                                            quantidade:
+                                                produtoPedido.quantidade + 1);
+                                  });
+                                },
+                              ),
+                              IconButton(
+                                icon: const Icon(Icons.delete),
+                                onPressed: () {
+                                  setState(() {
+                                    _pedido.produtosPedido!.removeAt(index);
+                                  });
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                    itemCount: _pedido.produtosPedido!.length,
+                  ),
+                ),
+              const SizedBox(height: 16),
+              Row(
+                children: [
+                  Text(
+                    'Total: R\$ ${_pedido.produtosPedido!.fold(0.0, (previousValue, element) => previousValue + (element.quantidade * element.precoVendaProduto)).toStringAsFixed(2)}',
+                    style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                        color: Theme.of(context).colorScheme.secondary),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: _isSaving
+                          ? null
+                          : () async {
+                              if (_formKey.currentState!.validate()) {
+                                _formKey.currentState!.save();
+                                if (_pedido.prazoEntrega
+                                    .isBefore(_pedido.data)) {
+                                  ScaffoldMessenger.of(context).setState(() {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                            'Prazo de entrega inválido, deve ser maior que a data do pedido'),
+                                      ),
+                                    );
+                                  });
+                                } else if (_pedido.produtosPedido!.isEmpty) {
+                                  ScaffoldMessenger.of(context).setState(() {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                            'Pedido deve conter pelo menos um produto'),
+                                      ),
+                                    );
+                                  });
+                                } else if (_pedido.clienteId == -1) {
+                                  ScaffoldMessenger.of(context).setState(() {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                            'Pedido deve conter um cliente'),
+                                      ),
+                                    );
+                                  });
+                                } else {
+                                  setState(() {
+                                    _isSaving = true;
+                                  });
+                                  if (widget.pedido != null) {
+                                    await PedidoDao.updatePedido(
+                                        _pedido, widget.pedido!);
+                                  } else {
+                                    await PedidoDao.addPedido(_pedido);
+                                  }
+                                  setState(() {
+                                    _isSaving = false;
+                                  });
+                                  Navigator.of(context).pop(_pedido);
+                                }
+                              }
+                            },
+                      child: _isSaving
+                          ? const CircularProgressIndicator()
+                          : Text(widget.pedido != null
+                              ? 'Editar Pedido'
+                              : 'Adicionar Pedido'),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
