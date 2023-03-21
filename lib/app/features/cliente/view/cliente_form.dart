@@ -17,7 +17,7 @@ class _ClienteFormState extends State<ClienteForm> {
   final _formKey = GlobalKey<FormState>();
   Cliente? _cliente;
   late bool _isEditing;
-  bool _isLoading = true;
+  bool _isLoading = false;
   String email = '';
   String telefone = '';
 
