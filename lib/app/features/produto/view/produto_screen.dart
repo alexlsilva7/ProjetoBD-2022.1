@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:projeto_bd/app/features/armazem/controller/armazem_dao.dart';
 import 'package:projeto_bd/app/features/armazem/model/armazem.dart';

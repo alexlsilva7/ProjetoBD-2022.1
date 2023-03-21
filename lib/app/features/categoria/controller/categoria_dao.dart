@@ -50,13 +50,14 @@ class CategoriaDao {
     return rowsAffected;
   }
 
-  static Future<void> seed(int quantidade) async {
+  static Future<void> seed(int quantidade, void Function(String) onProgress) async {
     Faker faker = Faker.instance;
     faker.setLocale(FakerLocaleType.pt_BR);
-
+    final cat = await getCategorias();
+    final catLength = cat.length;
     List<String> nomes = [];
     while (nomes.length < quantidade) {
-      var nome = '${faker.commerce.department()} ${nomes.length}';
+      var nome = '${faker.commerce.department()} ${nomes.length + catLength}';
       if (nomes.contains(nome)) {
         continue;
       }
@@ -65,6 +66,7 @@ class CategoriaDao {
 
     final conn = await DbHelper.getConnection();
     for (var i = 0; i < quantidade; i++) {
+      onProgress('Categoria ${i + 1} de $quantidade');
       await conn.query(
         'INSERT INTO Categoria (nome, descricao) VALUES (?, ?)',
         [

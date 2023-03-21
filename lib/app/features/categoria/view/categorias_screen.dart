@@ -13,6 +13,7 @@ class CategoriasScreen extends StatefulWidget {
 class _CategoriasScreenState extends State<CategoriasScreen> {
   List<Categoria> _categorias = [];
   bool _isLoading = false;
+  String msgSeed = '';
 
   @override
   void initState() {
@@ -99,8 +100,11 @@ class _CategoriasScreenState extends State<CategoriasScreen> {
                       setState(() {
                         _isLoading = true;
                       });
-                      //TODO progress status bar
-                      await CategoriaDao.seed(quantidade);
+                      await CategoriaDao.seed(quantidade, (msg) {
+                        setState(() {
+                          msgSeed = msg;
+                        });
+                      });
                       setState(() {
                         _isLoading = false;
                       });
@@ -142,8 +146,18 @@ class _CategoriasScreenState extends State<CategoriasScreen> {
         ],
       ),
       body: _isLoading
-          ? const Center(
-              child: CircularProgressIndicator(),
+          ? Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const CircularProgressIndicator(),
+                  const SizedBox(height: 10),
+                  if (msgSeed.isNotEmpty)
+                    Text(
+                      msgSeed,
+                    ),
+                ],
+              ),
             )
           : ListView.builder(
               itemCount: _categorias.length,

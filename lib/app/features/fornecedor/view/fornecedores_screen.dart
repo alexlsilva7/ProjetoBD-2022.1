@@ -13,6 +13,7 @@ class FornecedoresScreen extends StatefulWidget {
 class _FornecedoresScreenState extends State<FornecedoresScreen> {
   List<Fornecedor> _fornecedores = [];
   bool _isLoading = false;
+  String msgSeed = '';
   @override
   void initState() {
     super.initState();
@@ -98,8 +99,12 @@ class _FornecedoresScreenState extends State<FornecedoresScreen> {
                       setState(() {
                         _isLoading = true;
                       });
-                      //TODO progress status bar
-                      await FornecedorDao.seed(quantidade);
+                      
+                      await FornecedorDao.seed(quantidade, (msg) {
+                        setState(() {
+                          msgSeed = msg;
+                        });
+                      });
                       setState(() {
                         _isLoading = false;
                       });
@@ -141,8 +146,18 @@ class _FornecedoresScreenState extends State<FornecedoresScreen> {
         ],
       ),
       body: _isLoading
-          ? const Center(
-              child: CircularProgressIndicator(),
+          ?  Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const CircularProgressIndicator(),
+                  const SizedBox(height: 10),
+                  if (msgSeed.isNotEmpty)
+                    Text(
+                      msgSeed,
+                    ),
+                ],
+              ),
             )
           : ListView.builder(
               itemCount: _fornecedores.length,

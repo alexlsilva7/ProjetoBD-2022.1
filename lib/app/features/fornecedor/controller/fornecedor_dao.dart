@@ -71,12 +71,13 @@ class FornecedorDao {
   }
 
   //seed
-  static Future<void> seed(int quantidade) async {
+  static Future<void> seed(int quantidade, void Function(String) onProgress) async {
     Faker faker = Faker.instance;
     faker.setLocale(FakerLocaleType.pt_BR);
 
     final conn = await DbHelper.getConnection();
     for (var i = 0; i < quantidade; i++) {
+      onProgress('Inserindo fornecedor ${i + 1} de $quantidade');
       await conn.query(
         'INSERT INTO Fornecedor (nome, localidade, tipo, documento) VALUES (?, ?, ?, ?)',
         [
