@@ -106,6 +106,7 @@ class _ProdutoFormState extends State<ProdutoForm> {
                   _produto = _produto.copyWith(nome: value);
                 },
               ),
+              const SizedBox(height: 16.0),
               TextFormField(
                 decoration: const InputDecoration(
                   labelText: 'Descrição',
@@ -122,40 +123,51 @@ class _ProdutoFormState extends State<ProdutoForm> {
                   _produto = _produto.copyWith(descricao: value);
                 },
               ),
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Preço de custo',
-                ),
-                keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Campo obrigatório';
-                  }
-                  return null;
-                },
-                initialValue: _produto.precoCusto.toString(),
-                onSaved: (value) {
-                  _produto =
-                      _produto.copyWith(precoCusto: double.parse(value!));
-                },
+              const SizedBox(height: 16.0),
+              Row(
+                children: [
+                  Expanded(
+                    child: TextFormField(
+                      decoration: const InputDecoration(
+                        labelText: 'Preço de custo',
+                      ),
+                      keyboardType: TextInputType.number,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Campo obrigatório';
+                        }
+                        return null;
+                      },
+                      initialValue: _produto.precoCusto.toString(),
+                      onSaved: (value) {
+                        _produto =
+                            _produto.copyWith(precoCusto: double.parse(value!));
+                      },
+                    ),
+                  ),
+                  const SizedBox(width: 16.0),
+                  Expanded(
+                    child: TextFormField(
+                      decoration: const InputDecoration(
+                        labelText: 'Preço de venda',
+                      ),
+                      keyboardType: TextInputType.number,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Campo obrigatório';
+                        }
+                        return null;
+                      },
+                      initialValue: _produto.precoVenda.toString(),
+                      onSaved: (value) {
+                        _produto =
+                            _produto.copyWith(precoVenda: double.parse(value!));
+                      },
+                    ),
+                  ),
+                ],
               ),
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: 'Preço de venda',
-                ),
-                keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Campo obrigatório';
-                  }
-                  return null;
-                },
-                initialValue: _produto.precoVenda.toString(),
-                onSaved: (value) {
-                  _produto =
-                      _produto.copyWith(precoVenda: double.parse(value!));
-                },
-              ),
+              const SizedBox(height: 16.0),
               TextFormField(
                 decoration: const InputDecoration(
                   labelText: 'Preço de venda mínimo',
@@ -179,6 +191,7 @@ class _ProdutoFormState extends State<ProdutoForm> {
                       _produto.copyWith(precoVendaMin: double.parse(value!));
                 },
               ),
+              const SizedBox(height: 16.0),
               Row(
                 children: [
                   Expanded(
@@ -202,6 +215,7 @@ class _ProdutoFormState extends State<ProdutoForm> {
                       ),
                     ),
                   ),
+                  const SizedBox(width: 16.0),
                   Expanded(
                     child: StatusProdutoDropdownButton(
                       status: _produto.status,
@@ -212,6 +226,7 @@ class _ProdutoFormState extends State<ProdutoForm> {
                   ),
                 ],
               ),
+              const SizedBox(height: 16.0),
               if (_fornecedores.isNotEmpty)
                 DropdownButtonFormField<Fornecedor>(
                   decoration: const InputDecoration(
@@ -233,6 +248,7 @@ class _ProdutoFormState extends State<ProdutoForm> {
                     _produto = _produto.copyWith(fornecedorId: fornecedor!.id);
                   },
                 ),
+              const SizedBox(height: 16.0),
               if (_categorias.isNotEmpty && !_isEditing)
                 DropdownButtonFormField<Categoria>(
                   decoration: const InputDecoration(

@@ -59,6 +59,7 @@ class _FornecedorFormState extends State<FornecedorForm> {
                   _fornecedor = _fornecedor.copyWith(nome: value);
                 },
               ),
+              const SizedBox(height: 16.0),
               TextFormField(
                 decoration: const InputDecoration(
                   labelText: 'Documento',
@@ -74,6 +75,7 @@ class _FornecedorFormState extends State<FornecedorForm> {
                   _fornecedor = _fornecedor.copyWith(documento: value);
                 },
               ),
+              const SizedBox(height: 16.0),
               TextFormField(
                 decoration: const InputDecoration(
                   labelText: 'Localidade',
@@ -90,12 +92,14 @@ class _FornecedorFormState extends State<FornecedorForm> {
                   _fornecedor = _fornecedor.copyWith(localidade: value);
                 },
               ),
+              const SizedBox(height: 16.0),
               TipoFornecedorDropdown(
                 fornecedor: _fornecedor,
                 onChanged: (value) {
                   _fornecedor = _fornecedor.copyWith(tipo: value);
                 },
               ),
+              const SizedBox(height: 16.0),
               ElevatedButton(
                 onPressed: _isLoading
                     ? null
@@ -156,6 +160,9 @@ class _TipoFornecedorDropdownState extends State<TipoFornecedorDropdown> {
   Widget build(BuildContext context) {
     return DropdownButtonFormField<TipoFornecedor>(
       value: _tipoFornecedor,
+      decoration: const InputDecoration(
+        labelText: 'Tipo',
+      ),
       items: TipoFornecedor.values
           .map(
             (e) => DropdownMenuItem(

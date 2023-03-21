@@ -57,6 +57,7 @@ class _ArmazemFormState extends State<ArmazemForm> {
                   _armazem = _armazem.copyWith(nome: value);
                 },
               ),
+              const SizedBox(height: 16.0),
               TextFormField(
                 decoration: const InputDecoration(
                   labelText: 'Endereço',
@@ -72,6 +73,7 @@ class _ArmazemFormState extends State<ArmazemForm> {
                   _armazem = _armazem.copyWith(endereco: value);
                 },
               ),
+              const SizedBox(height: 16.0),
               ElevatedButton(
                 onPressed: _isLoading
                     ? null

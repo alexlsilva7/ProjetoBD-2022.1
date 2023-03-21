@@ -56,6 +56,7 @@ class _CategoriaFormState extends State<CategoriaForm> {
                   _categoria = _categoria.copyWith(nome: value);
                 },
               ),
+              const SizedBox(height: 16.0),
               TextFormField(
                 decoration: const InputDecoration(
                   labelText: 'Descrição',
@@ -71,6 +72,7 @@ class _CategoriaFormState extends State<CategoriaForm> {
                   _categoria = _categoria.copyWith(descricao: value);
                 },
               ),
+              const SizedBox(height: 16.0),
               ElevatedButton(
                 onPressed: _isLoading
                     ? null

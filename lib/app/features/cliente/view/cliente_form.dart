@@ -107,6 +107,7 @@ class _ClienteFormState extends State<ClienteForm> {
                             _cliente = _cliente!.copyWith(nome: value);
                           },
                         ),
+                        const SizedBox(height: 16.0),
                         TextFormField(
                           decoration: const InputDecoration(
                             labelText: 'Cidade',
@@ -122,37 +123,47 @@ class _ClienteFormState extends State<ClienteForm> {
                             _cliente = _cliente!.copyWith(cidade: value);
                           },
                         ),
-                        TextFormField(
-                          decoration: const InputDecoration(
-                            labelText: 'Estado',
-                          ),
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Campo obrigatório';
-                            }
-                            return null;
-                          },
-                          initialValue: _cliente!.estado,
-                          onSaved: (value) {
-                            _cliente = _cliente!.copyWith(estado: value);
-                          },
+                        const SizedBox(height: 16.0),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: TextFormField(
+                                decoration: const InputDecoration(
+                                  labelText: 'Estado',
+                                ),
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'Campo obrigatório';
+                                  }
+                                  return null;
+                                },
+                                initialValue: _cliente!.estado,
+                                onSaved: (value) {
+                                  _cliente = _cliente!.copyWith(estado: value);
+                                },
+                              ),
+                            ),
+                            const SizedBox(width: 16.0),
+                            Expanded(
+                              child: TextFormField(
+                                decoration: const InputDecoration(
+                                  labelText: 'País',
+                                ),
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'Campo obrigatório';
+                                  }
+                                  return null;
+                                },
+                                initialValue: _cliente!.pais,
+                                onSaved: (value) {
+                                  _cliente = _cliente!.copyWith(pais: value);
+                                },
+                              ),
+                            ),
+                          ],
                         ),
-                        TextFormField(
-                          decoration: const InputDecoration(
-                            labelText: 'País',
-                          ),
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Campo obrigatório';
-                            }
-                            return null;
-                          },
-                          initialValue: _cliente!.pais,
-                          onSaved: (value) {
-                            _cliente = _cliente!.copyWith(pais: value);
-                          },
-                        ),
-                        //limite de credito
+                        const SizedBox(height: 16.0),
                         TextFormField(
                           decoration: const InputDecoration(
                             labelText: 'Limite de Crédito',
@@ -171,6 +182,7 @@ class _ClienteFormState extends State<ClienteForm> {
                             );
                           },
                         ),
+                        const SizedBox(height: 16.0),
                         Container(
                           decoration: BoxDecoration(
                             border: Border.all(color: Colors.grey, width: 2),
@@ -294,6 +306,7 @@ class _ClienteFormState extends State<ClienteForm> {
                             ),
                           ),
                         ),
+                        const SizedBox(height: 16.0),
                         Container(
                           decoration: BoxDecoration(
                             border: Border.all(color: Colors.grey, width: 2),
