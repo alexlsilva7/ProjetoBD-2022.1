@@ -32,27 +32,26 @@ class _Consulta1ScreenState extends State<Consulta1Screen> {
                   title: const Text('Query'),
                   content: const Text(
                     '''
-                      SELECT
-                        YEAR(p.data) AS ano,
-                        MONTH(p.data) AS mes,
-                        SUM(pp.quantidade) AS quantidade,
-                        prod.nome AS nomeProduto
-                      FROM
-                          Pedido p,
-                          ProdutoPedido pp,
-                          Produto prod
-                      WHERE
-                          YEAR(p.data) IN (2021, 2027, 2015) AND
-                          p.id = pp.pedidoId AND
-                          pp.produtoId = prod.id
-                      GROUP BY
-                          nomeProduto,
-                          ano,
-                          mes
-                      ORDER BY
-                          quantidade DESC;
+SELECT
+  YEAR(p.data) AS ano,
+  MONTH(p.data) AS mes,
+  SUM(pp.quantidade) AS quantidade,
+  prod.nome AS nomeProduto
+FROM
+    Pedido p,
+    ProdutoPedido pp,
+    Produto prod
+WHERE
+    YEAR(p.data) IN (2021, 2027, 2015) AND
+    p.id = pp.pedidoId AND
+    pp.produtoId = prod.id
+GROUP BY
+    nomeProduto,
+    ano,
+    mes
+ORDER BY
+    quantidade DESC;
                     ''',
-                    
                     textAlign: TextAlign.justify,
                   ),
                   actions: [
