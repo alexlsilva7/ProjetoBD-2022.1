@@ -35,6 +35,43 @@ class PedidoDao {
     return pedidos;
   }
 
+  static Future<List<Pedido>> getPedidosByClienteId(int clienteId) async {
+    final conn = await DbHelper.getConnection();
+    final results = await conn
+        .query('SELECT * FROM Pedido WHERE clienteId = ?', [clienteId]);
+    final pedidos = results
+        .map((row) => Pedido(
+              id: row['id'],
+              data: row['data'],
+              modoEncomenda: row['modoEncomenda'] == 'Retirada'
+                  ? ModoEncomenda.Retirada
+                  : ModoEncomenda.Entrega,
+              status: row['status'] == 'Em Preparação'
+                  ? Status.emPreparacao
+                  : row['status'] == 'Em Transporte'
+                      ? Status.emTransporte
+                      : row['status'] == 'Entregue'
+                          ? Status.entregue
+                          : row['status'] == 'Aguardando Pagamento'
+                              ? Status.aguardandoPagamento
+                              : Status.pagamentoConfirmado,
+              prazoEntrega: row['prazoEntrega'],
+              clienteId: row['clienteId'],
+            ))
+        .toList();
+    for (var pedido in pedidos) {
+      final pedido = pedidos.isEmpty ? null : pedidos.first;
+
+      if (pedido != null) {
+        pedido.produtosPedido =
+            await ProdutoPedidoDAO.getProdutosPedido(pedido);
+      }
+    }
+
+    await conn.close();
+    return pedidos;
+  }
+
   static Future<List<dynamic>> getIdsWhereProdutoPedidoIsNull() async {
     final conn = await DbHelper.getConnection();
     final results = await conn.query(
