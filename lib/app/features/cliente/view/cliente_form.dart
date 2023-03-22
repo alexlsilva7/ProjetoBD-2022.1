@@ -15,6 +15,7 @@ class ClienteForm extends StatefulWidget {
 
 class _ClienteFormState extends State<ClienteForm> {
   final _formKey = GlobalKey<FormState>();
+  final _formTelefoneKey = GlobalKey<FormState>();
   Cliente? _cliente;
   late bool _isEditing;
   bool _isLoading = false;
@@ -208,27 +209,32 @@ class _ClienteFormState extends State<ClienteForm> {
                                             return AlertDialog(
                                               title: const Text(
                                                   'Adicionar Telefone'),
-                                              content: TextFormField(
-                                                controller: _telefoneController,
-                                                decoration:
-                                                    const InputDecoration(
-                                                  labelText:
-                                                      'Telefone (com DDD)',
+                                              content: Form(
+                                                key: _formTelefoneKey,
+                                                child: TextFormField(
+                                                  controller:
+                                                      _telefoneController,
+                                                  decoration:
+                                                      const InputDecoration(
+                                                    labelText:
+                                                        'Telefone (com DDD)',
+                                                  ),
+                                                  keyboardType:
+                                                      TextInputType.phone,
+                                                  validator: (value) {
+                                                    if (value!.isEmpty) {
+                                                      return 'Campo obrigatório';
+                                                    } else if (value.length <
+                                                            11 ||
+                                                        value.length > 11) {
+                                                      return 'Telefone inválido';
+                                                    }
+                                                    return null;
+                                                  },
+                                                  onSaved: (value) {
+                                                    telefone = value!;
+                                                  },
                                                 ),
-                                                keyboardType:
-                                                    TextInputType.phone,
-                                                validator: (value) {
-                                                  if (value!.isEmpty) {
-                                                    return 'Campo obrigatório';
-                                                  } else if (value.length <
-                                                      11) {
-                                                    return 'Telefone inválido';
-                                                  }
-                                                  return null;
-                                                },
-                                                onSaved: (value) {
-                                                  telefone = value!;
-                                                },
                                               ),
                                               actions: [
                                                 TextButton(
@@ -239,16 +245,22 @@ class _ClienteFormState extends State<ClienteForm> {
                                                 ),
                                                 TextButton(
                                                   onPressed: () {
-                                                    var telefoneText =
-                                                        _telefoneController
-                                                            .text;
-                                                    _cliente!.telefones!.add(
-                                                      TelefoneCliente(
-                                                        telefone: telefoneText,
-                                                      ),
-                                                    );
-                                                    _telefoneController.clear();
-                                                    Navigator.pop(context);
+                                                    if (_formTelefoneKey
+                                                        .currentState!
+                                                        .validate()) {
+                                                      var telefoneText =
+                                                          _telefoneController
+                                                              .text;
+                                                      _cliente!.telefones!.add(
+                                                        TelefoneCliente(
+                                                          telefone:
+                                                              telefoneText,
+                                                        ),
+                                                      );
+                                                      _telefoneController
+                                                          .clear();
+                                                      Navigator.pop(context);
+                                                    }
                                                   },
                                                   child:
                                                       const Text('Adicionar'),
@@ -455,28 +467,15 @@ class _ClienteFormState extends State<ClienteForm> {
                                     setState(() {
                                       _isLoading = true;
                                     });
-                                    try {
-                                      if (_isEditing) {
-                                        await ClienteDao.updateCliente(
-                                                _cliente!)
-                                            .then((value) =>
-                                                Navigator.pop(context));
-                                      } else {
-                                        await ClienteDao.addCliente(_cliente!)
-                                            .then((value) =>
-                                                Navigator.pop(context));
-                                      }
-                                    } catch (e) {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        SnackBar(
-                                          content: Text(e.toString()),
-                                        ),
-                                      );
-                                    } finally {
-                                      setState(() {
-                                        _isLoading = false;
-                                      });
+
+                                    if (_isEditing) {
+                                      await ClienteDao.updateCliente(_cliente!)
+                                          .then((value) =>
+                                              Navigator.pop(context));
+                                    } else {
+                                      await ClienteDao.addCliente(_cliente!)
+                                          .then((value) =>
+                                              Navigator.pop(context));
                                     }
                                   }
                                 },

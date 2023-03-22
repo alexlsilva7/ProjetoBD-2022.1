@@ -170,26 +170,11 @@ class _ClientesScreenState extends State<ClientesScreen> {
                           leading:
                               const CircleAvatar(child: Icon(Icons.person)),
                           onTap: () => Navigator.of(context)
-                              .pushNamed('/edit-cliente', arguments: cliente.id)
+                              .pushNamed('/cliente', arguments: cliente.id)
                               .then((_) => _loadClientes()),
                           title: Text(cliente.nome),
                           subtitle: Text(
                               '${cliente.cidade} - ${cliente.estado} - ${cliente.pais}'),
-                          trailing: IconButton(
-                            icon: const Icon(Icons.delete),
-                            onPressed: () async {
-                              try {
-                                await ClienteDao.deleteCliente(cliente.id!);
-                                _loadClientes();
-                              } catch (e) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(e.toString()),
-                                  ),
-                                );
-                              }
-                            },
-                          ),
                         ),
                       );
                     },

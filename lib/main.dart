@@ -6,6 +6,7 @@ import 'package:projeto_bd/app/features/armazem/view/armazem_form.dart';
 import 'package:projeto_bd/app/features/categoria/model/categoria.dart';
 import 'package:projeto_bd/app/features/categoria/view/categoria_form.dart';
 import 'package:projeto_bd/app/features/cliente/view/cliente_form.dart';
+import 'package:projeto_bd/app/features/cliente/view/cliente_screen.dart';
 import 'package:projeto_bd/app/features/consultas/view/consulta_1_screen.dart';
 import 'package:projeto_bd/app/features/fornecedor/model/fornecedor.dart';
 import 'package:projeto_bd/app/features/fornecedor/view/fornecedor_form.dart';
@@ -95,6 +96,9 @@ class MainApp extends StatelessWidget {
                   ),
               '/selecionar-produto': (context) =>
                   const SelecionaProdutoScreen(),
+              '/cliente': (context) => ClienteScreen(
+                    id: ModalRoute.of(context)!.settings.arguments as int,
+                  ),
             },
             debugShowCheckedModeBanner: false,
             theme: theme,
