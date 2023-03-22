@@ -5,6 +5,8 @@ import 'package:projeto_bd/app/features/armazem/controller/armazem_dao.dart';
 import 'package:projeto_bd/app/features/armazem/model/armazem.dart';
 import 'package:projeto_bd/app/features/categoria/controller/categoria_dao.dart';
 import 'package:projeto_bd/app/features/categoria/model/categoria.dart';
+import 'package:projeto_bd/app/features/fornecedor/controller/fornecedor_dao.dart';
+import 'package:projeto_bd/app/features/fornecedor/model/fornecedor.dart';
 import 'package:projeto_bd/app/features/produto/controller/produto_dao.dart';
 import 'package:projeto_bd/app/features/produto/model/produto.dart';
 import 'package:projeto_bd/app/features/produto/model/traducao_produto.dart';
@@ -31,6 +33,8 @@ class _ProdutoScreenState extends State<ProdutoScreen> {
 
   Armazem? armazem;
 
+  Fornecedor? fornecedor;
+
   @override
   void initState() {
     super.initState();
@@ -41,6 +45,7 @@ class _ProdutoScreenState extends State<ProdutoScreen> {
   Future<void> _loadProduto() async {
     produto = await ProdutoDao.getProduto(widget.id);
     await _loadArmazem();
+    await _loadFornecedor();
     setState(() {});
   }
 
@@ -51,6 +56,10 @@ class _ProdutoScreenState extends State<ProdutoScreen> {
 
   Future<void> _loadArmazem() async {
     armazem = await ArmazemDao.getArmazem(produto!.estoque!.armazemId);
+  }
+
+  Future<void> _loadFornecedor() async {
+    fornecedor = await FornecedorDao.getFornecedor(produto!.fornecedorId);
   }
 
   @override
@@ -116,7 +125,11 @@ class _ProdutoScreenState extends State<ProdutoScreen> {
                       style: const TextStyle(fontSize: 18),
                     ),
                     Text(
-                      'Data de garantia: ${produto!.dataGarantia}',
+                      'Data de garantia: ${produto!.dataGarantia.day}/${produto!.dataGarantia.month}/${produto!.dataGarantia.year}',
+                      style: const TextStyle(fontSize: 18),
+                    ),
+                    Text(
+                      'Fornecedor: ${fornecedor!.nome}',
                       style: const TextStyle(fontSize: 18),
                     ),
                     const Divider(),

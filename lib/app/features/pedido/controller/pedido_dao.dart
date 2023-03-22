@@ -59,14 +59,6 @@ class PedidoDao {
               clienteId: row['clienteId'],
             ))
         .toList();
-    for (var pedido in pedidos) {
-      final pedido = pedidos.isEmpty ? null : pedidos.first;
-
-      if (pedido != null) {
-        pedido.produtosPedido =
-            await ProdutoPedidoDAO.getProdutosPedido(pedido);
-      }
-    }
 
     await conn.close();
     return pedidos;

@@ -31,7 +31,8 @@ class ProdutoDao {
     return produtos;
   }
 
-  static Future<int?> addProduto(Produto produto) async {
+  static Future<int?> addProduto(
+      Produto produto, int quantidade, int armazemId) async {
     final conn = await DbHelper.getConnection();
     final result = await conn.query(
       'INSERT INTO Produto (nome, descricao, dataGarantia, status, precoCusto, precoVenda, precoVendaMin, fornecedorId) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
@@ -47,6 +48,11 @@ class ProdutoDao {
       ],
     );
     final id = result.insertId;
+    final faker = Faker.instance;
+    await conn.query(
+        'INSERT INTO Estoque (codigo, quantidade, armazemId, produtoId) VALUES (?, ?, ?, ?)',
+        [faker.datatype.string(length: 10), quantidade, armazemId, id]);
+
     await conn.close();
     return id;
   }

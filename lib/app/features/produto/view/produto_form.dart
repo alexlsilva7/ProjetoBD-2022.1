@@ -1,6 +1,8 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:projeto_bd/app/features/armazem/controller/armazem_dao.dart';
+import 'package:projeto_bd/app/features/armazem/model/armazem.dart';
 import 'package:projeto_bd/app/features/categoria/controller/categoria_dao.dart';
 import 'package:projeto_bd/app/features/categoria/model/categoria.dart';
 import 'package:projeto_bd/app/features/fornecedor/controller/fornecedor_dao.dart';
@@ -27,8 +29,18 @@ class _ProdutoFormState extends State<ProdutoForm> {
 
   List<Fornecedor> _fornecedores = [];
   List<Categoria> _categorias = [];
+  List<Armazem> _armazens = [];
 
   Categoria? _categoriaSelecionada;
+  Armazem? _armazemSelecionado;
+
+  int _quantidadeInicial = 0;
+
+  late TextEditingController _precoCustoController;
+  late TextEditingController _precoVendaController;
+  late TextEditingController _precoVendaMinController;
+  final TextEditingController _quantidadeInicialController =
+      TextEditingController(text: '0');
 
   @override
   void initState() {
@@ -47,8 +59,22 @@ class _ProdutoFormState extends State<ProdutoForm> {
           fornecedorId: 0,
         );
     _loadFornecedores();
-    if (!_isEditing) {
+    if (_isEditing) {
+      _precoCustoController = TextEditingController(
+        text: _produto.precoCusto.toStringAsFixed(2),
+      );
+      _precoVendaController = TextEditingController(
+        text: _produto.precoVenda.toStringAsFixed(2),
+      );
+      _precoVendaMinController = TextEditingController(
+        text: _produto.precoVendaMin.toStringAsFixed(2),
+      );
+    } else {
       _loadCategorias();
+      _loadArmazens();
+      _precoCustoController = TextEditingController();
+      _precoVendaController = TextEditingController();
+      _precoVendaMinController = TextEditingController();
     }
   }
 
@@ -78,6 +104,22 @@ class _ProdutoFormState extends State<ProdutoForm> {
     });
   }
 
+  void _loadArmazens() async {
+    final armazens = await ArmazemDao.getArmazens();
+    if (armazens.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Cadastre um armazém antes de cadastrar um produto'),
+        ),
+      );
+      Navigator.of(context).pop();
+    }
+    setState(() {
+      _armazens = armazens;
+      _armazemSelecionado = _armazens.first;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -95,6 +137,7 @@ class _ProdutoFormState extends State<ProdutoForm> {
                 decoration: const InputDecoration(
                   labelText: 'Nome',
                 ),
+                autovalidateMode: AutovalidateMode.onUserInteraction,
                 validator: (value) {
                   if (value!.isEmpty) {
                     return 'Campo obrigatório';
@@ -112,6 +155,7 @@ class _ProdutoFormState extends State<ProdutoForm> {
                   labelText: 'Descrição',
                 ),
                 maxLines: 3,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
                 validator: (value) {
                   if (value!.isEmpty) {
                     return 'Campo obrigatório';
@@ -128,17 +172,30 @@ class _ProdutoFormState extends State<ProdutoForm> {
                 children: [
                   Expanded(
                     child: TextFormField(
+                      controller: _precoCustoController,
                       decoration: const InputDecoration(
                         labelText: 'Preço de custo',
                       ),
                       keyboardType: TextInputType.number,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'Campo obrigatório';
+                        } else if (double.tryParse(value) == 0) {
+                          return 'O preço de custo não pode ser igual a 0';
                         }
                         return null;
                       },
-                      initialValue: _produto.precoCusto.toString(),
+                      onChanged: (value) {
+                        if (value.isNotEmpty) {
+                          value = value.replaceAll(RegExp(r'[^\d]'), '');
+                          _precoCustoController.text = value;
+                          _precoCustoController.selection =
+                              TextSelection.fromPosition(
+                            TextPosition(offset: value.length),
+                          );
+                        }
+                      },
                       onSaved: (value) {
                         _produto =
                             _produto.copyWith(precoCusto: double.parse(value!));
@@ -148,17 +205,34 @@ class _ProdutoFormState extends State<ProdutoForm> {
                   const SizedBox(width: 16.0),
                   Expanded(
                     child: TextFormField(
+                      controller: _precoVendaController,
                       decoration: const InputDecoration(
                         labelText: 'Preço de venda',
                       ),
                       keyboardType: TextInputType.number,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'Campo obrigatório';
+                        } else if (double.tryParse(value)! == 0) {
+                          return 'O preço de venda não pode ser igual a 0';
+                        } else if (_precoCustoController.text.isNotEmpty &&
+                            double.tryParse(value)! <
+                                double.tryParse(_precoCustoController.text)!) {
+                          return 'O preço de venda não pode ser menor que o preço de custo';
                         }
                         return null;
                       },
-                      initialValue: _produto.precoVenda.toString(),
+                      onChanged: (value) {
+                        if (value.isNotEmpty) {
+                          value = value.replaceAll(RegExp(r'[^\d]'), '');
+                          _precoVendaController.text = value;
+                          _precoVendaController.selection =
+                              TextSelection.fromPosition(
+                            TextPosition(offset: value.length),
+                          );
+                        }
+                      },
                       onSaved: (value) {
                         _produto =
                             _produto.copyWith(precoVenda: double.parse(value!));
@@ -169,23 +243,38 @@ class _ProdutoFormState extends State<ProdutoForm> {
               ),
               const SizedBox(height: 16.0),
               TextFormField(
+                controller: _precoVendaMinController,
                 decoration: const InputDecoration(
                   labelText: 'Preço de venda mínimo',
                 ),
                 keyboardType: TextInputType.number,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
                 validator: (value) {
                   if (value!.isEmpty) {
                     return 'Campo obrigatório';
-                  } else if (double.parse(value) > _produto.precoVenda) {
-                    return 'O preço de venda mínimo não pode ser maior que o preço de venda';
-                  } else if (double.parse(value) < _produto.precoCusto) {
-                    return 'O preço de venda mínimo não pode ser menor que o preço de custo';
-                  } else if (double.parse(value) == 0) {
+                  } else if (double.tryParse(value)! == 0) {
                     return 'O preço de venda mínimo não pode ser igual a 0';
+                  } else if (_precoVendaController.text.isNotEmpty &&
+                      double.tryParse(value)! >=
+                          double.tryParse(_precoVendaController.text)!) {
+                    return 'O preço de venda mínimo não pode ser maior ou igual que o preço de venda';
+                  } else if (_precoCustoController.text.isNotEmpty &&
+                      double.tryParse(value)! <=
+                          double.tryParse(_precoCustoController.text)!) {
+                    return 'O preço de venda mínimo não pode ser menor ou igual que o preço de custo';
                   }
                   return null;
                 },
-                initialValue: _produto.precoVendaMin.toString(),
+                onChanged: (value) {
+                  if (value.isNotEmpty) {
+                    value = value.replaceAll(RegExp(r'[^\d]'), '');
+                    _precoVendaMinController.text = value;
+                    _precoVendaMinController.selection =
+                        TextSelection.fromPosition(
+                      TextPosition(offset: value.length),
+                    );
+                  }
+                },
                 onSaved: (value) {
                   _produto =
                       _produto.copyWith(precoVendaMin: double.parse(value!));
@@ -254,15 +343,7 @@ class _ProdutoFormState extends State<ProdutoForm> {
                   decoration: const InputDecoration(
                     labelText: 'Categoria Inicial',
                   ),
-                  value: _categorias.firstWhere(
-                    (categoria) =>
-                        categoria.id ==
-                        ((_produto.categorias != null &&
-                                _produto.categorias!.isNotEmpty)
-                            ? _produto.categorias!.first.id
-                            : 0),
-                    orElse: () => _categorias.first,
-                  ),
+                  value: _categorias.first,
                   items: _categorias
                       .map(
                         (categoria) => DropdownMenuItem<Categoria>(
@@ -276,12 +357,68 @@ class _ProdutoFormState extends State<ProdutoForm> {
                   },
                 ),
               const SizedBox(height: 16.0),
+              if (_armazens.isNotEmpty && !_isEditing)
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextFormField(
+                        controller: _quantidadeInicialController,
+                        decoration: const InputDecoration(
+                          labelText: 'Quantidade Inicial',
+                        ),
+                        keyboardType: TextInputType.number,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Campo obrigatório';
+                          } else if (int.tryParse(value)! == 0) {
+                            return 'A quantidade inicial não pode ser igual a 0';
+                          }
+                          return null;
+                        },
+                        onChanged: (value) {
+                          if (value.isNotEmpty) {
+                            value = value.replaceAll(RegExp(r'[^\d]'), '');
+                            _quantidadeInicialController.text = value;
+                            _quantidadeInicialController.selection =
+                                TextSelection.fromPosition(
+                              TextPosition(offset: value.length),
+                            );
+                          }
+                        },
+                        onSaved: (value) {
+                          _quantidadeInicial = int.parse(value!);
+                        },
+                      ),
+                    ),
+                    const SizedBox(width: 16.0),
+                    Expanded(
+                      child: DropdownButtonFormField<Armazem>(
+                        decoration: const InputDecoration(
+                          labelText: 'Armazem Inicial',
+                        ),
+                        value: _armazens.first,
+                        items: _armazens
+                            .map(
+                              (armazem) => DropdownMenuItem<Armazem>(
+                                value: armazem,
+                                child: Text(armazem.nome),
+                              ),
+                            )
+                            .toList(),
+                        onChanged: (armazem) {
+                          _armazemSelecionado = armazem;
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              const SizedBox(height: 16.0),
               ElevatedButton(
                 onPressed: _isLoading
                     ? null
                     : () async {
-                        if (_formKey.currentState!.validate() &&
-                            _categoriaSelecionada != null) {
+                        if (_formKey.currentState!.validate()) {
                           _formKey.currentState!.save();
                           setState(() {
                             _isLoading = true;
@@ -290,9 +427,14 @@ class _ProdutoFormState extends State<ProdutoForm> {
                             if (_isEditing) {
                               await ProdutoDao.updateProduto(_produto)
                                   .then((value) => Navigator.of(context).pop());
-                            } else {
+                            } else if (_categoriaSelecionada != null &&
+                                _armazemSelecionado != null) {
                               _produto = _produto.copyWith(
-                                id: await ProdutoDao.addProduto(_produto),
+                                id: await ProdutoDao.addProduto(
+                                  _produto,
+                                  _quantidadeInicial,
+                                  _armazemSelecionado!.id!,
+                                ),
                               );
 
                               await ProdutoCategoriaDAO.addProdutoCategoria(

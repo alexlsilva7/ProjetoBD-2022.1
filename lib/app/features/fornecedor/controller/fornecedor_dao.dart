@@ -26,6 +26,27 @@ class FornecedorDao {
     }
   }
 
+  static Future<Fornecedor?> getFornecedor(int id) async {
+    final conn = await DbHelper.getConnection();
+    final results = await conn.query(
+      'SELECT * FROM Fornecedor WHERE id = ?',
+      [id],
+    );
+    final fornecedores = results
+        .map((row) => Fornecedor(
+              id: row['id'],
+              nome: row['nome'],
+              localidade: row['localidade'],
+              tipo: row['tipo'] == 'Física'
+                  ? TipoFornecedor.Fisica
+                  : TipoFornecedor.Juridica,
+              documento: row['documento'],
+            ))
+        .toList();
+    await conn.close();
+    return fornecedores.isEmpty ? null : fornecedores.first;
+  }
+
   static Future<int?> addFornecedor(Fornecedor fornecedor) async {
     final conn = await DbHelper.getConnection();
     final result = await conn.query(
@@ -71,7 +92,8 @@ class FornecedorDao {
   }
 
   //seed
-  static Future<void> seed(int quantidade, void Function(String) onProgress) async {
+  static Future<void> seed(
+      int quantidade, void Function(String) onProgress) async {
     Faker faker = Faker.instance;
     faker.setLocale(FakerLocaleType.pt_BR);
 
