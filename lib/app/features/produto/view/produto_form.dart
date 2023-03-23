@@ -188,7 +188,7 @@ class _ProdutoFormState extends State<ProdutoForm> {
                       },
                       onChanged: (value) {
                         if (value.isNotEmpty) {
-                          value = value.replaceAll(RegExp(r'[^\d]'), '');
+                          value = value.replaceAll(RegExp(r'[^\d.]'), '');
                           _precoCustoController.text = value;
                           _precoCustoController.selection =
                               TextSelection.fromPosition(
@@ -217,15 +217,15 @@ class _ProdutoFormState extends State<ProdutoForm> {
                         } else if (double.tryParse(value)! == 0) {
                           return 'O preço de venda não pode ser igual a 0';
                         } else if (_precoCustoController.text.isNotEmpty &&
-                            double.tryParse(value)! <
+                            double.tryParse(value)! <=
                                 double.tryParse(_precoCustoController.text)!) {
-                          return 'O preço de venda não pode ser menor que o preço de custo';
+                          return 'O preço de venda não pode ser menor ou igual que o preço de custo';
                         }
                         return null;
                       },
                       onChanged: (value) {
                         if (value.isNotEmpty) {
-                          value = value.replaceAll(RegExp(r'[^\d]'), '');
+                          value = value.replaceAll(RegExp(r'[^\d.]'), '');
                           _precoVendaController.text = value;
                           _precoVendaController.selection =
                               TextSelection.fromPosition(
@@ -267,7 +267,7 @@ class _ProdutoFormState extends State<ProdutoForm> {
                 },
                 onChanged: (value) {
                   if (value.isNotEmpty) {
-                    value = value.replaceAll(RegExp(r'[^\d]'), '');
+                    value = value.replaceAll(RegExp(r'[^\d.]'), '');
                     _precoVendaMinController.text = value;
                     _precoVendaMinController.selection =
                         TextSelection.fromPosition(
