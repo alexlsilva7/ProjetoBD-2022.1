@@ -34,6 +34,7 @@ class _ClientesScreenState extends State<ClientesScreen> {
       setState(() {
         _clientes = clientes;
         _isLoading = false;
+        _isSearching = false;
       });
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -44,6 +45,7 @@ class _ClientesScreenState extends State<ClientesScreen> {
       setState(() {
         _clientes = [];
         _isLoading = false;
+        _isSearching = false;
       });
     }
   }
