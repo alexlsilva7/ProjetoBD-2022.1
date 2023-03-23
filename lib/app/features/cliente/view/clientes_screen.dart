@@ -17,6 +17,7 @@ class _ClientesScreenState extends State<ClientesScreen> {
   String msgSeed = '';
 
   bool _isSearching = false;
+  final FocusNode _nodeSearch = FocusNode();
 
   @override
   void initState() {
@@ -55,6 +56,7 @@ class _ClientesScreenState extends State<ClientesScreen> {
       appBar: AppBar(
         title: _isSearching
             ? TextField(
+                focusNode: _nodeSearch,
                 decoration: const InputDecoration(
                   hintText: 'Pesquisar',
                 ),
@@ -72,6 +74,7 @@ class _ClientesScreenState extends State<ClientesScreen> {
             onPressed: () async {
               if (_isSearching) {
                 _loadClientes();
+                _nodeSearch.unfocus();
                 setState(() {
                   _isSearching = false;
                 });
@@ -79,6 +82,7 @@ class _ClientesScreenState extends State<ClientesScreen> {
                 setState(() {
                   _isSearching = true;
                 });
+                _nodeSearch.requestFocus();
               }
             },
             icon: _isSearching
