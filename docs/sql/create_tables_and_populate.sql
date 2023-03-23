@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: db:3306
--- Tempo de geração: 17/03/2023 às 16:50
+-- Tempo de geração: 23/03/2023 às 15:00
 -- Versão do servidor: 8.0.32
 -- Versão do PHP: 8.1.15
 
@@ -29,8 +29,8 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `Armazem` (
   `id` int UNSIGNED NOT NULL,
-  `nome` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
-  `endereco` varchar(255) COLLATE utf8mb4_general_ci NOT NULL
+  `nome` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `endereco` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -147,8 +147,8 @@ INSERT INTO `Armazem` (`id`, `nome`, `endereco`) VALUES
 
 CREATE TABLE `Categoria` (
   `id` int UNSIGNED NOT NULL,
-  `nome` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `descricao` varchar(255) COLLATE utf8mb4_general_ci NOT NULL
+  `nome` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `descricao` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -175,29 +175,29 @@ INSERT INTO `Categoria` (`id`, `nome`, `descricao`) VALUES
 
 CREATE TABLE `Cliente` (
   `id` int UNSIGNED NOT NULL,
-  `nome` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `pais` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `estado` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `cidade` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `nome` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `pais` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `estado` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `cidade` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `limiteCredito` decimal(10,2) NOT NULL,
   `dataCadastro` date NOT NULL
-) ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Despejando dados para a tabela `Cliente`
 --
 
 INSERT INTO `Cliente` (`id`, `nome`, `pais`, `estado`, `cidade`, `limiteCredito`, `dataCadastro`) VALUES
-(1, 'Isabella Souza', 'Macao', 'Santa Catarina', 'Lake Clara', 7465.00, '2013-03-31'),
-(2, 'Alessandro Albuquerque', 'Lesoto', 'Acre', 'North Rafaela', 5916.00, '2016-05-15'),
-(3, 'Arthur Moraes', 'Eslováquia', 'Bahia', 'Vitor de Nossa Senhora', 6825.00, '2010-04-08'),
+(1, 'Isabella Souza', 'Japão', 'Santa Catarina', 'Lake Clara', 7465.00, '2013-03-31'),
+(2, 'Alessandro Albuquerque', 'Japão', 'Acre', 'North Rafaela', 5916.00, '2016-05-15'),
+(3, 'Arthur Moraes', 'Japão', 'Bahia', 'Vitor de Nossa Senhora', 6825.00, '2010-04-08'),
 (4, 'Lorenzo Melo Neto', 'Paraguai', 'Goiás', 'East Meire do Descoberto', 1958.00, '2012-05-29'),
 (5, 'Lavínia Macedo', 'Paquistão', 'Amapá', 'Lake Fabrícia de Nossa Senhora', 9312.00, '2011-01-31'),
 (6, 'Lavínia Oliveira', 'Seicheles', 'Paraná', 'Félix do Sul', 3995.00, '2015-06-26'),
 (7, 'Gúbio Instance of \'Name\' Santos', 'Finlândia', 'Espírito Santo', 'North Mércia', 5712.00, '2010-04-25'),
 (8, 'Eduardo Saraiva', 'Maldives', 'Minas Gerais', 'Yango de Nossa Senhora', 7871.00, '2012-08-26'),
 (9, 'Dr. Antonella Albuquerque', 'Ilhas Svalbard & Jan Mayen', 'Acre', 'Gustavo de Nossa Senhora', 1718.00, '2015-02-21'),
-(10, 'Clara Oliveira', 'Botsuana', 'Ceará', 'Ladislau do Sul', 2529.00, '2016-03-31'),
+(10, 'Clara Oliveira', 'Mexico', 'Ceará', 'Ladislau do Sul', 2529.00, '2016-03-31'),
 (11, 'Sr. Ladislau Macedo', 'Gana', 'Amapá', 'Port Alexandre', 4164.00, '2018-09-23'),
 (12, 'Ladislau Reis', 'Suécia', 'Rio Grande do Sul', 'West Sirineu', 1327.00, '2014-08-09'),
 (13, 'Dra. Valentina Pereira', 'Turquia', 'Rondônia', 'Lake Warley', 7940.00, '2020-05-21'),
@@ -205,7 +205,7 @@ INSERT INTO `Cliente` (`id`, `nome`, `pais`, `estado`, `cidade`, `limiteCredito`
 (15, 'Isabella Silva Neto', 'Somália', 'Piauí', 'East Mércia', 8032.00, '2015-04-24'),
 (16, 'Davi Albuquerque', 'Suazilândia', 'Mato Grosso do Sul', 'Isabel de Nossa Senhora', 609.00, '2010-05-17'),
 (17, 'Sr. Helena Souza', 'Granada', 'Pernambuco', 'Kléber do Descoberto', 5350.00, '2015-10-02'),
-(18, 'Emanuelly Reis', 'Nauru', 'Pará', 'Port Maitê', 2402.00, '2010-08-11'),
+(18, 'Emanuelly Reis', 'Mexico', 'Pará', 'Port Maitê', 2402.00, '2010-08-11'),
 (19, 'Yasmin Instance of \'Name\' Barros', 'Nauru', 'Piauí', 'New Daniel do Sul', 313.00, '2011-10-15'),
 (20, 'Eduardo Instance of \'Name\' Melo', 'Sérvia', 'Goiás', 'New Paula de Nossa Senhora', 7767.00, '2014-03-26'),
 (21, 'Rebeca Albuquerque', 'Suazilândia', 'Acre', 'West Hugo do Norte', 8918.00, '2013-08-25'),
@@ -225,7 +225,7 @@ INSERT INTO `Cliente` (`id`, `nome`, `pais`, `estado`, `cidade`, `limiteCredito`
 (35, 'Murilo Barros', 'Bahamas', 'Pernambuco', 'West Núbia do Norte', 8024.00, '2016-10-16'),
 (36, 'Kléber Franco', 'Tajiquistão', 'Rio Grande do Sul', 'North Noah do Descoberto', 141.00, '2011-04-21'),
 (37, 'Nicolas Xavier', 'Hong Kong', 'Mato Grosso do Sul', 'East Benjamin de Nossa Senhora', 5003.00, '2016-01-07'),
-(38, 'Danilo Melo', 'Jibuti', 'Distrito Federal', 'Lake Rebeca do Descoberto', 9813.00, '2017-06-11'),
+(38, 'Danilo Melo', 'Mexico', 'Distrito Federal', 'Lake Rebeca do Descoberto', 9813.00, '2017-06-11'),
 (39, 'Alexandre Oliveira', 'Vaticano', 'São Paulo', 'Port Elisa de Nossa Senhora', 8032.00, '2017-08-25'),
 (40, 'Breno Franco', 'Laos', 'Pernambuco', 'Lorena de Nossa Senhora', 1315.00, '2013-12-05'),
 (41, 'Ígor Batista Neto', 'Gâmbia', 'Pernambuco', 'South Lívia do Sul', 9647.00, '2013-03-03'),
@@ -247,7 +247,7 @@ INSERT INTO `Cliente` (`id`, `nome`, `pais`, `estado`, `cidade`, `limiteCredito`
 (57, 'Maria Cecília Nogueira', 'Cabo Verde', 'Amapá', 'South Maria Eduarda', 3739.00, '2017-03-25'),
 (58, 'Paula Costa', 'Síria', 'Santa Catarina', 'New Cecília', 8808.00, '2014-04-21'),
 (59, 'Víctor Xavier', 'Nova Caledonia', 'Santa Catarina', 'New Marcos', 3950.00, '2014-06-23'),
-(60, 'Calebe Instance of \'Name\' Reis', 'Hong Kong', 'Tocantins', 'Lake Marcelo do Sul', 1745.00, '2011-03-15'),
+(60, 'Calebe Instance of \'Name\' Reis', 'Mexico', 'Tocantins', 'Lake Marcelo do Sul', 1745.00, '2011-03-15'),
 (61, 'Tertuliano Moreira', 'Polônia', 'Piauí', 'Pablo de Nossa Senhora', 4257.00, '2017-03-27'),
 (62, 'Deneval Costa', 'Bôsnia', 'Tocantins', 'Fábio do Descoberto', 291.00, '2016-04-15'),
 (63, 'Sr. Matheus Xavier', 'Ilhas Caiman', 'Alagoas', 'Rafael do Sul', 3663.00, '2018-06-24'),
@@ -519,7 +519,7 @@ INSERT INTO `Cliente` (`id`, `nome`, `pais`, `estado`, `cidade`, `limiteCredito`
 (329, 'Luiza Reis', 'Suíça', 'Paraná', 'New Tertuliano do Descoberto', 6509.00, '2020-03-31'),
 (330, 'Srta. Rafael Costa', 'Tunísia', 'Pernambuco', 'East Hugo do Descoberto', 6542.00, '2013-09-03'),
 (331, 'Elísio Albuquerque', 'Chile', 'Rio Grande do Sul', 'West Aline de Nossa Senhora', 1675.00, '2014-08-18'),
-(332, 'Maria Eduarda Santos', 'Maldives', 'Distrito Federal', 'Maria do Norte', 8825.00, '2015-03-23'),
+(332, 'Maria Eduarda Santos', 'Mexico', 'Distrito Federal', 'Maria do Norte', 8825.00, '2015-03-23'),
 (333, 'Janaína Souza', 'Santa Helena', 'Maranhão', 'Isaac do Norte', 2611.00, '2013-12-29'),
 (334, 'Hélio Souza', 'Suazilândia', 'Rio Grande do Sul', 'Port Heitor', 9984.00, '2019-03-05'),
 (335, 'Isabela Franco', 'Tuvalu', 'Espírito Santo', 'Port Breno de Nossa Senhora', 7704.00, '2015-01-01'),
@@ -533,7 +533,7 @@ INSERT INTO `Cliente` (`id`, `nome`, `pais`, `estado`, `cidade`, `limiteCredito`
 (343, 'Nicolas Instance of \'Name\' Carvalho', 'El Salvador', 'Rio Grande do Norte', 'West Noah do Descoberto', 6975.00, '2017-04-21'),
 (344, 'Dr. Sarah Xavier', 'Croácia', 'Distrito Federal', 'Fabrício de Nossa Senhora', 389.00, '2016-09-23'),
 (345, 'Dra. Sarah Albuquerque', 'Iraque', 'Maranhão', 'Port Lara', 7325.00, '2013-10-14'),
-(346, 'Guilherme Carvalho', 'Omã', 'Mato Grosso do Sul', 'Isabela do Sul', 3100.00, '2016-11-18'),
+(346, 'Guilherme Carvalho', 'Mexico', 'Mato Grosso do Sul', 'Isabela do Sul', 3100.00, '2016-11-18'),
 (347, 'Isis Santos', 'Ruanda', 'Minas Gerais', 'Melissa do Sul', 1272.00, '2010-05-16'),
 (348, 'Srta. Ana Luiza Pereira', 'Congo', 'Paraná', 'Yango do Norte', 8479.00, '2019-09-01'),
 (349, 'Sílvia Martins', 'Eritreia', 'Rio de Janeiro', 'New Isadora', 1076.00, '2016-09-09'),
@@ -697,7 +697,7 @@ INSERT INTO `Cliente` (`id`, `nome`, `pais`, `estado`, `cidade`, `limiteCredito`
 
 CREATE TABLE `EmailCliente` (
   `clienteId` int UNSIGNED NOT NULL,
-  `email` varchar(255) COLLATE utf8mb4_general_ci NOT NULL
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -1474,7 +1474,7 @@ INSERT INTO `EmailCliente` (`clienteId`, `email`) VALUES
 
 CREATE TABLE `Estoque` (
   `id` int UNSIGNED NOT NULL,
-  `codigo` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `codigo` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `quantidade` int UNSIGNED NOT NULL,
   `armazemId` int UNSIGNED NOT NULL,
   `produtoId` int UNSIGNED NOT NULL
@@ -1744,10 +1744,10 @@ INSERT INTO `Estoque` (`id`, `codigo`, `quantidade`, `armazemId`, `produtoId`) V
 
 CREATE TABLE `Fornecedor` (
   `id` int UNSIGNED NOT NULL,
-  `nome` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `localidade` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `tipo` enum('Física','Jurídica') COLLATE utf8mb4_general_ci NOT NULL,
-  `documento` varchar(50) COLLATE utf8mb4_general_ci NOT NULL
+  `nome` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `localidade` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `tipo` enum('Física','Jurídica') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `documento` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -1865,11 +1865,11 @@ INSERT INTO `Fornecedor` (`id`, `nome`, `localidade`, `tipo`, `documento`) VALUE
 CREATE TABLE `Pedido` (
   `id` int UNSIGNED NOT NULL,
   `data` date NOT NULL,
-  `modoEncomenda` enum('Retirada','Entrega') COLLATE utf8mb4_general_ci NOT NULL,
-  `status` enum('Aguardando Pagamento','Pagamento Confirmado','Em Preparação','Em Transporte','Entregue') COLLATE utf8mb4_general_ci NOT NULL,
+  `modoEncomenda` enum('Retirada','Entrega') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `status` enum('Aguardando Pagamento','Pagamento Confirmado','Em Preparação','Em Transporte','Entregue') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `prazoEntrega` date NOT NULL,
   `clienteId` int UNSIGNED NOT NULL
-) ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Despejando dados para a tabela `Pedido`
@@ -1923,7 +1923,7 @@ INSERT INTO `Pedido` (`id`, `data`, `modoEncomenda`, `status`, `prazoEntrega`, `
 (45, '2023-02-24', 'Retirada', 'Aguardando Pagamento', '2023-02-27', 367),
 (46, '2016-03-27', 'Retirada', 'Entregue', '2016-03-30', 408),
 (47, '2022-06-11', 'Retirada', 'Aguardando Pagamento', '2022-06-14', 214),
-(48, '2025-02-28', 'Retirada', 'Em Transporte', '2025-03-03', 38),
+(48, '2021-02-28', 'Retirada', 'Em Transporte', '2021-03-03', 38),
 (49, '2015-10-30', 'Retirada', 'Em Preparação', '2015-11-02', 314),
 (50, '2018-08-24', 'Entrega', 'Aguardando Pagamento', '2018-08-27', 490),
 (51, '2016-02-03', 'Retirada', 'Entregue', '2016-02-06', 197),
@@ -3377,7 +3377,23 @@ INSERT INTO `Pedido` (`id`, `data`, `modoEncomenda`, `status`, `prazoEntrega`, `
 (1497, '2024-06-21', 'Retirada', 'Aguardando Pagamento', '2024-06-24', 486),
 (1498, '2025-11-27', 'Entrega', 'Aguardando Pagamento', '2025-11-30', 116),
 (1499, '2022-01-31', 'Retirada', 'Entregue', '2022-02-03', 319),
-(1500, '2025-07-17', 'Retirada', 'Em Transporte', '2025-07-20', 95);
+(1500, '2025-07-17', 'Retirada', 'Em Transporte', '2025-07-20', 95),
+(1501, '2023-03-23', 'Retirada', 'Pagamento Confirmado', '2023-03-30', 1),
+(1502, '2023-03-23', 'Retirada', 'Pagamento Confirmado', '2023-03-30', 1),
+(1503, '2023-03-23', 'Retirada', 'Pagamento Confirmado', '2023-03-30', 1),
+(1504, '2023-03-23', 'Retirada', 'Pagamento Confirmado', '2023-03-30', 1),
+(1516, '2023-03-23', 'Retirada', 'Aguardando Pagamento', '2023-03-30', 1),
+(1517, '2023-03-23', 'Retirada', 'Aguardando Pagamento', '2023-03-30', 1),
+(1518, '2023-03-23', 'Retirada', 'Aguardando Pagamento', '2023-03-30', 1),
+(1519, '2023-03-23', 'Retirada', 'Aguardando Pagamento', '2023-03-30', 1),
+(1520, '2023-03-23', 'Retirada', 'Aguardando Pagamento', '2023-03-30', 1),
+(1521, '2023-03-23', 'Retirada', 'Aguardando Pagamento', '2023-03-30', 14),
+(1522, '2023-03-23', 'Retirada', 'Aguardando Pagamento', '2023-03-30', 1),
+(1523, '2023-03-23', 'Retirada', 'Aguardando Pagamento', '2023-03-30', 1),
+(1524, '2023-03-23', 'Retirada', 'Aguardando Pagamento', '2023-03-30', 1),
+(1525, '2023-03-23', 'Retirada', 'Aguardando Pagamento', '2023-03-30', 1),
+(1526, '2023-03-23', 'Retirada', 'Aguardando Pagamento', '2023-03-30', 1),
+(1527, '2023-03-23', 'Retirada', 'Aguardando Pagamento', '2023-03-30', 1);
 
 -- --------------------------------------------------------
 
@@ -3387,15 +3403,15 @@ INSERT INTO `Pedido` (`id`, `data`, `modoEncomenda`, `status`, `prazoEntrega`, `
 
 CREATE TABLE `Produto` (
   `id` int UNSIGNED NOT NULL,
-  `nome` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `descricao` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `nome` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `descricao` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `dataGarantia` date DEFAULT NULL,
-  `status` enum('ativo','inativo') COLLATE utf8mb4_general_ci NOT NULL,
+  `status` enum('ativo','inativo') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `precoCusto` decimal(10,2) NOT NULL,
   `precoVenda` decimal(10,2) NOT NULL,
   `precoVendaMin` decimal(10,2) NOT NULL,
   `fornecedorId` int UNSIGNED NOT NULL
-) ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Despejando dados para a tabela `Produto`
@@ -4048,7 +4064,7 @@ CREATE TABLE `ProdutoPedido` (
   `pedidoId` int UNSIGNED NOT NULL,
   `precoVendaProduto` decimal(10,2) NOT NULL,
   `quantidade` int UNSIGNED NOT NULL
-) ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Despejando dados para a tabela `ProdutoPedido`
@@ -4106,6 +4122,8 @@ INSERT INTO `ProdutoPedido` (`produtoId`, `pedidoId`, `precoVendaProduto`, `quan
 (3, 1288, 35.00, 2),
 (3, 1303, 35.00, 5),
 (3, 1424, 35.00, 8),
+(3, 1516, 35.00, 600),
+(3, 1517, 35.00, 600),
 (4, 32, 45.00, 1),
 (4, 74, 45.00, 7),
 (4, 227, 45.00, 1),
@@ -4125,6 +4143,10 @@ INSERT INTO `ProdutoPedido` (`produtoId`, `pedidoId`, `precoVendaProduto`, `quan
 (4, 1315, 45.00, 4),
 (4, 1402, 45.00, 5),
 (4, 1497, 45.00, 3),
+(4, 1501, 45.00, 600),
+(4, 1519, 45.00, 600),
+(4, 1526, 45.00, 600),
+(4, 1527, 45.00, 600),
 (5, 161, 26.00, 1),
 (5, 285, 26.00, 8),
 (5, 380, 26.00, 4),
@@ -4136,6 +4158,7 @@ INSERT INTO `ProdutoPedido` (`produtoId`, `pedidoId`, `precoVendaProduto`, `quan
 (5, 996, 26.00, 4),
 (5, 1219, 26.00, 7),
 (5, 1394, 26.00, 8),
+(5, 1502, 26.00, 600),
 (6, 71, 29.00, 6),
 (6, 191, 29.00, 3),
 (6, 317, 29.00, 6),
@@ -4152,6 +4175,8 @@ INSERT INTO `ProdutoPedido` (`produtoId`, `pedidoId`, `precoVendaProduto`, `quan
 (6, 1331, 29.00, 3),
 (6, 1368, 29.00, 5),
 (6, 1491, 29.00, 7),
+(6, 1521, 29.00, 1),
+(6, 1522, 29.00, 600),
 (7, 11, 25.00, 7),
 (7, 130, 25.00, 7),
 (7, 324, 25.00, 9),
@@ -4180,6 +4205,9 @@ INSERT INTO `ProdutoPedido` (`produtoId`, `pedidoId`, `precoVendaProduto`, `quan
 (7, 1412, 25.00, 9),
 (7, 1430, 25.00, 5),
 (7, 1439, 25.00, 3),
+(7, 1503, 25.00, 600),
+(7, 1504, 25.00, 600),
+(7, 1520, 25.00, 600),
 (8, 19, 21.00, 9),
 (8, 324, 21.00, 8),
 (8, 327, 21.00, 8),
@@ -4269,6 +4297,7 @@ INSERT INTO `ProdutoPedido` (`produtoId`, `pedidoId`, `precoVendaProduto`, `quan
 (13, 1289, 47.00, 5),
 (13, 1310, 47.00, 6),
 (13, 1360, 47.00, 2),
+(13, 1523, 47.00, 600),
 (14, 32, 45.00, 1),
 (14, 124, 45.00, 9),
 (14, 320, 45.00, 3),
@@ -4288,6 +4317,7 @@ INSERT INTO `ProdutoPedido` (`produtoId`, `pedidoId`, `precoVendaProduto`, `quan
 (14, 1369, 45.00, 6),
 (14, 1415, 45.00, 5),
 (14, 1461, 45.00, 7),
+(14, 1518, 45.00, 600),
 (15, 10, 35.00, 8),
 (15, 115, 35.00, 3),
 (15, 152, 35.00, 1),
@@ -4308,7 +4338,7 @@ INSERT INTO `ProdutoPedido` (`produtoId`, `pedidoId`, `precoVendaProduto`, `quan
 (16, 298, 46.00, 6),
 (16, 379, 46.00, 6),
 (16, 485, 46.00, 3),
-(16, 660, 46.00, 6),
+(16, 660, 46.00, 600),
 (16, 670, 46.00, 9),
 (16, 721, 46.00, 8),
 (16, 891, 46.00, 8),
@@ -4395,6 +4425,7 @@ INSERT INTO `ProdutoPedido` (`produtoId`, `pedidoId`, `precoVendaProduto`, `quan
 (20, 1379, 39.00, 9),
 (20, 1381, 39.00, 7),
 (20, 1415, 39.00, 3),
+(20, 1524, 39.00, 600),
 (21, 19, 36.00, 6),
 (21, 288, 36.00, 4),
 (21, 392, 36.00, 5),
@@ -4444,6 +4475,7 @@ INSERT INTO `ProdutoPedido` (`produtoId`, `pedidoId`, `precoVendaProduto`, `quan
 (23, 1338, 38.00, 3),
 (23, 1366, 38.00, 8),
 (23, 1412, 38.00, 7),
+(23, 1525, 38.00, 600),
 (24, 181, 48.00, 7),
 (24, 216, 48.00, 7),
 (24, 253, 48.00, 6),
@@ -4771,7 +4803,7 @@ INSERT INTO `ProdutoPedido` (`produtoId`, `pedidoId`, `precoVendaProduto`, `quan
 (46, 1173, 42.00, 4),
 (46, 1225, 42.00, 5),
 (46, 1371, 42.00, 4),
-(46, 1400, 42.00, 1),
+(46, 1400, 42.00, 600),
 (46, 1429, 42.00, 7),
 (47, 228, 32.00, 4),
 (47, 344, 32.00, 7),
@@ -5268,7 +5300,7 @@ INSERT INTO `ProdutoPedido` (`produtoId`, `pedidoId`, `precoVendaProduto`, `quan
 (82, 278, 44.00, 5),
 (82, 343, 44.00, 3),
 (82, 401, 44.00, 5),
-(82, 660, 44.00, 4),
+(82, 660, 44.00, 600),
 (82, 686, 44.00, 6),
 (82, 812, 44.00, 5),
 (82, 954, 44.00, 2),
@@ -5334,7 +5366,7 @@ INSERT INTO `ProdutoPedido` (`produtoId`, `pedidoId`, `precoVendaProduto`, `quan
 (86, 1330, 48.00, 2),
 (86, 1358, 48.00, 3),
 (86, 1414, 48.00, 6),
-(86, 1484, 48.00, 2),
+(86, 1484, 48.00, 600),
 (87, 8, 21.00, 8),
 (87, 21, 21.00, 6),
 (87, 69, 21.00, 8),
@@ -5529,7 +5561,7 @@ INSERT INTO `ProdutoPedido` (`produtoId`, `pedidoId`, `precoVendaProduto`, `quan
 (99, 209, 46.00, 4),
 (99, 386, 46.00, 1),
 (99, 492, 46.00, 7),
-(99, 589, 46.00, 4),
+(99, 589, 46.00, 600),
 (99, 1183, 46.00, 4),
 (99, 1398, 46.00, 5),
 (99, 1411, 46.00, 8),
@@ -5739,7 +5771,7 @@ INSERT INTO `ProdutoPedido` (`produtoId`, `pedidoId`, `precoVendaProduto`, `quan
 (113, 52, 38.00, 1),
 (113, 238, 38.00, 8),
 (113, 335, 38.00, 9),
-(113, 369, 38.00, 4),
+(113, 369, 38.00, 600),
 (113, 389, 38.00, 4),
 (113, 619, 38.00, 6),
 (113, 724, 38.00, 6),
@@ -6018,7 +6050,7 @@ INSERT INTO `ProdutoPedido` (`produtoId`, `pedidoId`, `precoVendaProduto`, `quan
 (131, 472, 48.00, 9),
 (131, 535, 48.00, 6),
 (131, 554, 48.00, 2),
-(131, 589, 48.00, 9),
+(131, 589, 48.00, 600),
 (131, 917, 48.00, 7),
 (131, 958, 48.00, 6),
 (131, 1172, 48.00, 7),
@@ -6410,7 +6442,7 @@ INSERT INTO `ProdutoPedido` (`produtoId`, `pedidoId`, `precoVendaProduto`, `quan
 (156, 1367, 28.00, 7),
 (156, 1395, 28.00, 9),
 (156, 1463, 28.00, 7),
-(156, 1484, 28.00, 5),
+(156, 1484, 28.00, 600),
 (157, 65, 30.00, 1),
 (157, 74, 30.00, 8),
 (157, 91, 30.00, 6),
@@ -6427,7 +6459,7 @@ INSERT INTO `ProdutoPedido` (`produtoId`, `pedidoId`, `precoVendaProduto`, `quan
 (157, 1172, 30.00, 5),
 (157, 1421, 30.00, 3),
 (157, 1447, 30.00, 7),
-(157, 1484, 30.00, 2),
+(157, 1484, 30.00, 600),
 (158, 25, 46.00, 4),
 (158, 88, 46.00, 4),
 (158, 206, 46.00, 3),
@@ -6578,7 +6610,8 @@ INSERT INTO `ProdutoPedido` (`produtoId`, `pedidoId`, `precoVendaProduto`, `quan
 (166, 1057, 33.00, 2),
 (166, 1298, 33.00, 2),
 (166, 1334, 33.00, 4),
-(167, 12, 39.00, 5),
+(167, 12, 39.00, 5);
+INSERT INTO `ProdutoPedido` (`produtoId`, `pedidoId`, `precoVendaProduto`, `quantidade`) VALUES
 (167, 16, 39.00, 6),
 (167, 452, 39.00, 3),
 (167, 470, 39.00, 3),
@@ -6595,11 +6628,10 @@ INSERT INTO `ProdutoPedido` (`produtoId`, `pedidoId`, `precoVendaProduto`, `quan
 (167, 1249, 39.00, 5),
 (167, 1251, 39.00, 9),
 (167, 1405, 39.00, 2),
-(168, 39, 27.00, 7);
-INSERT INTO `ProdutoPedido` (`produtoId`, `pedidoId`, `precoVendaProduto`, `quantidade`) VALUES
+(168, 39, 27.00, 7),
 (168, 268, 27.00, 7),
 (168, 614, 27.00, 4),
-(168, 660, 27.00, 3),
+(168, 660, 27.00, 600),
 (168, 709, 27.00, 1),
 (168, 904, 27.00, 2),
 (168, 1079, 27.00, 1),
@@ -6893,7 +6925,7 @@ INSERT INTO `ProdutoPedido` (`produtoId`, `pedidoId`, `precoVendaProduto`, `quan
 (185, 1095, 22.00, 9),
 (185, 1184, 22.00, 9),
 (185, 1248, 22.00, 2),
-(185, 1484, 22.00, 1),
+(185, 1484, 22.00, 600),
 (185, 1493, 22.00, 8),
 (186, 5, 30.00, 9),
 (186, 87, 30.00, 5),
@@ -6927,7 +6959,7 @@ INSERT INTO `ProdutoPedido` (`produtoId`, `pedidoId`, `precoVendaProduto`, `quan
 (188, 342, 21.00, 6),
 (188, 404, 21.00, 7),
 (188, 579, 21.00, 5),
-(188, 589, 21.00, 6),
+(188, 589, 21.00, 600),
 (188, 603, 21.00, 8),
 (188, 610, 21.00, 9),
 (188, 657, 21.00, 8),
@@ -7054,7 +7086,7 @@ INSERT INTO `ProdutoPedido` (`produtoId`, `pedidoId`, `precoVendaProduto`, `quan
 (197, 81, 28.00, 6),
 (197, 192, 28.00, 2),
 (197, 257, 28.00, 7),
-(197, 369, 28.00, 3),
+(197, 369, 28.00, 600),
 (197, 391, 28.00, 2),
 (197, 594, 28.00, 2),
 (197, 612, 28.00, 7),
@@ -7064,7 +7096,7 @@ INSERT INTO `ProdutoPedido` (`produtoId`, `pedidoId`, `precoVendaProduto`, `quan
 (197, 1117, 28.00, 6),
 (197, 1228, 28.00, 8),
 (197, 1311, 28.00, 9),
-(197, 1400, 28.00, 6),
+(197, 1400, 28.00, 600),
 (197, 1475, 28.00, 7),
 (198, 3, 21.00, 6),
 (198, 61, 21.00, 7),
@@ -7383,7 +7415,7 @@ INSERT INTO `ProdutoPedido` (`produtoId`, `pedidoId`, `precoVendaProduto`, `quan
 (219, 157, 49.00, 1),
 (219, 220, 49.00, 5),
 (219, 326, 49.00, 5),
-(219, 589, 49.00, 2),
+(219, 589, 49.00, 600),
 (219, 679, 49.00, 8),
 (219, 720, 49.00, 1),
 (219, 993, 49.00, 1),
@@ -7668,7 +7700,7 @@ INSERT INTO `ProdutoPedido` (`produtoId`, `pedidoId`, `precoVendaProduto`, `quan
 (237, 26, 22.00, 7),
 (237, 147, 22.00, 6),
 (237, 266, 22.00, 2),
-(237, 369, 22.00, 7),
+(237, 369, 22.00, 600),
 (237, 681, 22.00, 1),
 (237, 835, 22.00, 5),
 (237, 945, 22.00, 9),
@@ -7904,8 +7936,8 @@ INSERT INTO `ProdutoPedido` (`produtoId`, `pedidoId`, `precoVendaProduto`, `quan
 
 CREATE TABLE `TelefoneCliente` (
   `clienteId` int UNSIGNED NOT NULL,
-  `telefone` varchar(11) COLLATE utf8mb4_general_ci NOT NULL
-) ;
+  `telefone` varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Despejando dados para a tabela `TelefoneCliente`
@@ -8661,9 +8693,9 @@ INSERT INTO `TelefoneCliente` (`clienteId`, `telefone`) VALUES
 
 CREATE TABLE `TraducaoProduto` (
   `produtoId` int UNSIGNED NOT NULL,
-  `idioma` varchar(10) COLLATE utf8mb4_general_ci NOT NULL,
-  `nome` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `descricao` varchar(255) COLLATE utf8mb4_general_ci NOT NULL
+  `idioma` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `nome` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `descricao` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -9533,7 +9565,7 @@ ALTER TABLE `Categoria`
 -- AUTO_INCREMENT de tabela `Cliente`
 --
 ALTER TABLE `Cliente`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=501;
 
 --
 -- AUTO_INCREMENT de tabela `EmailCliente`
@@ -9557,13 +9589,13 @@ ALTER TABLE `Fornecedor`
 -- AUTO_INCREMENT de tabela `Pedido`
 --
 ALTER TABLE `Pedido`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1528;
 
 --
 -- AUTO_INCREMENT de tabela `Produto`
 --
 ALTER TABLE `Produto`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=251;
 
 --
 -- Restrições para tabelas despejadas
