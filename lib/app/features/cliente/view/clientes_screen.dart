@@ -15,6 +15,9 @@ class _ClientesScreenState extends State<ClientesScreen> {
 
   bool _isLoading = false;
   String msgSeed = '';
+
+  bool _isSearching = false;
+
   @override
   void initState() {
     super.initState();
@@ -50,8 +53,38 @@ class _ClientesScreenState extends State<ClientesScreen> {
       drawer:
           MediaQuery.of(context).size.width <= 500 ? const MainDrawer() : null,
       appBar: AppBar(
-        title: const Text('Clientes'),
+        title: _isSearching
+            ? TextField(
+                decoration: const InputDecoration(
+                  hintText: 'Pesquisar',
+                ),
+                onChanged: (value) async {
+                  var result = await ClienteDao.getClientesSearch(value);
+                  setState(() {
+                    _clientes = result;
+                  });
+                },
+              )
+            : const Text('Clientes'),
         actions: [
+          //search
+          IconButton(
+            onPressed: () async {
+              if (_isSearching) {
+                _loadClientes();
+                setState(() {
+                  _isSearching = false;
+                });
+              } else {
+                setState(() {
+                  _isSearching = true;
+                });
+              }
+            },
+            icon: _isSearching
+                ? const Icon(Icons.close)
+                : const Icon(Icons.search),
+          ),
           PopupMenuButton(
             itemBuilder: (context) => [
               const PopupMenuItem(

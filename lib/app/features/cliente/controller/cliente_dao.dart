@@ -23,6 +23,26 @@ class ClienteDao {
     return clientes;
   }
 
+  static Future<List<Cliente>> getClientesSearch(String search) async {
+    final conn = await DbHelper.getConnection();
+    final results = await conn.query(
+        'SELECT * FROM Cliente WHERE nome LIKE ? OR pais LIKE ? OR estado LIKE ? OR cidade LIKE ?',
+        ['%$search%', '%$search%', '%$search%', '%$search%']);
+    final clientes = results
+        .map((row) => Cliente(
+              id: row['id'],
+              nome: row['nome'],
+              pais: row['pais'],
+              estado: row['estado'],
+              cidade: row['cidade'],
+              limiteCredito: row['limiteCredito'],
+              dataCadastro: row['dataCadastro'],
+            ))
+        .toList();
+    await conn.close();
+    return clientes;
+  }
+
   static Future<int?> addCliente(Cliente cliente) async {
     final conn = await DbHelper.getConnection();
     final result = await conn.query(
