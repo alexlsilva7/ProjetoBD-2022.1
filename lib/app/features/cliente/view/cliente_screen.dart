@@ -84,10 +84,6 @@ class _ClienteScreenState extends State<ClienteScreen> {
                         cliente!.nome,
                         style: const TextStyle(fontSize: 24),
                       ),
-                      subtitle: Text(
-                        'CPF: ${cliente!.emails![0].email}',
-                        style: const TextStyle(fontSize: 18),
-                      ),
                     ),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
