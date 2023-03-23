@@ -208,12 +208,21 @@ SELECT
 FROM
     Cliente c,
     Pedido p,
-    ProdutoPedido pp
+    (SELECT
+        p.id AS pedidoId,
+        SUM(pp.precoVendaProduto * pp.quantidade) AS valorTotalPedido
+    FROM
+        Pedido p,
+        ProdutoPedido pp
+    WHERE
+        p.id = pp.pedidoId
+    GROUP BY
+        pedidoId) valorTotalPedido
 WHERE
     YEAR(p.data) = 2021 AND
     c.pais = 'Mexico' AND
     c.id = p.clienteId AND
-    p.id = pp.pedidoId
+    p.id = valorTotalPedido.pedidoId
 GROUP BY
     estado,
     cidade
@@ -235,19 +244,28 @@ SELECT
 FROM
     Cliente c,
     Pedido p,
-    ProdutoPedido pp
+    (SELECT
+        p.id AS pedidoId,
+        SUM(pp.precoVendaProduto * pp.quantidade) AS valorTotalPedido
+    FROM
+        Pedido p,
+        ProdutoPedido pp
+    WHERE
+        p.id = pp.pedidoId
+    GROUP BY
+        pedidoId) valorTotalPedido
 WHERE
     c.pais = 'Japão' AND
     c.id = p.clienteId AND
-    p.id = pp.pedidoId AND
-    (pp.precoVendaProduto * pp.quantidade) > 10000
+    p.id = valorTotalPedido.pedidoId AND
+    valorTotalPedido.valorTotalPedido > 10000
 GROUP BY
     nomeCliente,
     limiteCredito,
     estado,
     cidade
 HAVING
-    totalCompras >= 20;
+    totalCompras >= 20
       ''',
     },
     {
