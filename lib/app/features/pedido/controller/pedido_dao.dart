@@ -95,6 +95,11 @@ class PedidoDao {
       ],
     );
     final id = result.insertId;
+
+    for (var produtoPedido in pedido.produtosPedido!) {
+      produtoPedido.pedidoId = id;
+      await ProdutoPedidoDAO.addProdutoPedido(produtoPedido);
+    }
     await conn.close();
     return id;
   }
