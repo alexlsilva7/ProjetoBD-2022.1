@@ -18,6 +18,7 @@ dependencies:
   provider: ^6.0.5
   adaptive_theme: ^3.2.0
   data_tables: ^1.4.0
+  shared_preferences: ^2.0.20
   
 
 dev_dependencies:
