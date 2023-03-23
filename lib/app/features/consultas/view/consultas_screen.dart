@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:projeto_bd/app/core/components/drawer/main_drawer.dart';
+import 'package:projeto_bd/app/features/consultas/controller/consultas_controller.dart';
 import 'package:projeto_bd/app/features/consultas/view/components/consulta_list_tile.dart';
 
 class ConsultasScreen extends StatefulWidget {
@@ -10,6 +11,8 @@ class ConsultasScreen extends StatefulWidget {
 }
 
 class _ConsultasScreenState extends State<ConsultasScreen> {
+  ConsultasController controller = ConsultasController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,14 +21,14 @@ class _ConsultasScreenState extends State<ConsultasScreen> {
       appBar: AppBar(
         title: const Text('Consultas'),
       ),
-      body: ListView(
-        children: const [
-          ConsultaListTile(
-            consulta:
-                '1. Liste a quantidade de vendas realizadas nos anos 2021, 2027 e 2015, agrupada pelo nome do produto, por ano e por mês; o resultado deve ser mostrado de maneira decrescente pelo valor da soma do total de vendas do produto.',
-            rota: '/consulta1',
-          ),
-        ],
+      body: ListView.builder(
+        itemCount: controller.consultas.length,
+        itemBuilder: (context, index) {
+          return ConsultaListTile(
+            consulta: controller.getConsultaMapById(index + 1)['title'],
+            id: index + 1,
+          );
+        },
       ),
     );
   }

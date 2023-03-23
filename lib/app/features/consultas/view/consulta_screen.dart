@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:projeto_bd/app/features/consultas/controller/consultas_controller.dart';
 import 'package:projeto_bd/app/features/consultas/view/components/data_source_data_table.dart';
 
-class Consulta1Screen extends StatefulWidget {
-  const Consulta1Screen({super.key});
+class ConsultaScreen extends StatefulWidget {
+  final int id;
+  const ConsultaScreen({super.key, required this.id});
 
   @override
-  State<Consulta1Screen> createState() => _Consulta1ScreenState();
+  State<ConsultaScreen> createState() => _ConsultaScreenState();
 }
 
-class _Consulta1ScreenState extends State<Consulta1Screen> {
+class _ConsultaScreenState extends State<ConsultaScreen> {
   final ConsultasController _controller = ConsultasController();
 
   List<Map<String, dynamic>>? _rows;
@@ -20,38 +21,16 @@ class _Consulta1ScreenState extends State<Consulta1Screen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Consulta 1'),
+        title: Text('Consulta ${widget.id}'),
         actions: [
           IconButton(
             onPressed: () {
-              //show dialog with the query
-
               showDialog(
                 context: context,
                 builder: (context) => AlertDialog(
                   title: const Text('Query'),
-                  content: const Text(
-                    '''
-SELECT
-  YEAR(p.data) AS ano,
-  MONTH(p.data) AS mes,
-  SUM(pp.quantidade) AS quantidade,
-  prod.nome AS nomeProduto
-FROM
-    Pedido p,
-    ProdutoPedido pp,
-    Produto prod
-WHERE
-    YEAR(p.data) IN (2021, 2027, 2015) AND
-    p.id = pp.pedidoId AND
-    pp.produtoId = prod.id
-GROUP BY
-    nomeProduto,
-    ano,
-    mes
-ORDER BY
-    quantidade DESC;
-                    ''',
+                  content: Text(
+                    _controller.getConsultaMapById(widget.id)['query'],
                     textAlign: TextAlign.justify,
                   ),
                   actions: [
@@ -71,11 +50,11 @@ ORDER BY
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           children: [
-            const Text(
-              '1. Liste a quantidade de vendas realizadas nos anos 2021, 2027 e 2015, agrupada pelo nome do produto, por ano e por mês; o resultado deve ser mostrado de maneira decrescente pelo valor da soma do total de vendas do produto.',
+            Text(
+              _controller.getConsultaMapById(widget.id)['title'],
               maxLines: 10,
               textAlign: TextAlign.justify,
-              style: TextStyle(
+              style: const TextStyle(
                   fontSize: 16, height: 1.2, fontWeight: FontWeight.w600),
             ),
             const SizedBox(height: 16),
@@ -87,7 +66,7 @@ ORDER BY
                     _isLoading = true;
                   });
                   try {
-                    final rows = await _controller.getConsulta1();
+                    final rows = await _controller.getConsulta(widget.id);
                     setState(() {
                       _rows = rows;
                       _isLoading = false;
@@ -125,6 +104,7 @@ ORDER BY
                                     .map((e) => DataColumn(label: Text(e)))
                                     .toList()
                               ],
+                              columnSpacing: 16,
                               showFirstLastButtons: true,
                               rowsPerPage: 20,
                               source: DataTableSourceImp(_rows!),

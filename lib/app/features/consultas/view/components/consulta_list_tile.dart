@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 
 class ConsultaListTile extends StatelessWidget {
   final String consulta;
-  final String rota;
+  final int id;
 
-  const ConsultaListTile(
-      {super.key, required this.consulta, required this.rota});
+  const ConsultaListTile({super.key, required this.consulta, required this.id});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +18,8 @@ class ConsultaListTile extends StatelessWidget {
           style: const TextStyle(
               fontSize: 16, height: 1.2, fontWeight: FontWeight.w600),
         ),
-        onTap: () => Navigator.of(context).pushNamed(rota),
+        onTap: () =>
+            Navigator.of(context).pushNamed('/consulta', arguments: id),
       ),
     );
   }
