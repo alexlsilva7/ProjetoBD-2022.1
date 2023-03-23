@@ -54,7 +54,15 @@ Implementar um programa com interface gráfica para apresentar os resultados das
 
 ### Screenshots
 
-Em breve
+![Tela inicial](docs/screenshots/home.png)
+
+![Tela de produtos](docs/screenshots/produtos_screen.png)
+
+![Tela de uma consulta](docs/screenshots/consulta_screen.png)
+
+![Tela de pedido](docs/screenshots/pedido_screen.png)
+
+![Tela de cliente](docs/screenshots/cliente_screen.png) 
 
 ## Seminário
 
