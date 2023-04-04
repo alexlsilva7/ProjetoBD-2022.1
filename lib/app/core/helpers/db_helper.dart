@@ -9,7 +9,6 @@ class DbHelper {
   static String _db = 'projeto-bd';
   //mysql -u root -p projeto-bd
 
-  //initConfig
   static Future<void> initConfig() async {
     final prefs = await SharedPreferences.getInstance();
     if (prefs.getString('host') == null) {
@@ -23,7 +22,6 @@ class DbHelper {
     }
   }
 
-  //getConfig
   static Future<ConnectionSettings> getConfig() async {
     final prefs = await SharedPreferences.getInstance();
 
