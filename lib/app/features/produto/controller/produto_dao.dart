@@ -31,27 +31,55 @@ class ProdutoDao {
     return produtos;
   }
 
+  static Future<List<Produto>> getLastProducts(int quantidade) async {
+    final conn = await DbHelper.getConnection();
+    final results = await conn
+        .query('SELECT * FROM Produto ORDER BY id DESC LIMIT $quantidade');
+    final produtos = results
+        .map((row) => Produto(
+              id: row['id'],
+              nome: row['nome'],
+              descricao: row['descricao'],
+              precoCusto: row['precoCusto'],
+              precoVenda: row['precoVenda'],
+              precoVendaMin: row['precoVendaMin'],
+              dataGarantia: row['dataGarantia'],
+              status: row['status'] == 'Ativo'
+                  ? StatusProduto.Ativo
+                  : StatusProduto.Inativo,
+              fornecedorId: row['fornecedorId'],
+            ))
+        .toList();
+    await conn.close();
+    return produtos;
+  }
+
   static Future<int?> addProduto(
       Produto produto, int quantidade, int armazemId) async {
     final conn = await DbHelper.getConnection();
-    final result = await conn.query(
-      'INSERT INTO Produto (nome, descricao, dataGarantia, status, precoCusto, precoVenda, precoVendaMin, fornecedorId) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-      [
-        produto.nome,
-        produto.descricao,
-        produto.dataGarantia.toUtc(),
-        produto.status.name,
-        produto.precoCusto,
-        produto.precoVenda,
-        produto.precoVendaMin,
-        produto.fornecedorId
-      ],
-    );
-    final id = result.insertId;
     final faker = Faker.instance;
-    await conn.query(
-        'INSERT INTO Estoque (codigo, quantidade, armazemId, produtoId) VALUES (?, ?, ?, ?)',
-        [faker.datatype.string(length: 10), quantidade, armazemId, id]);
+
+    final id = await conn.transaction((context) async {
+      final result = await context.query(
+        '''INSERT INTO Produto (nome, descricao, dataGarantia, status, precoCusto, precoVenda, precoVendaMin, fornecedorId) 
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?)''',
+        [
+          produto.nome,
+          produto.descricao,
+          produto.dataGarantia.toUtc(),
+          produto.status.name,
+          produto.precoCusto,
+          produto.precoVenda,
+          produto.precoVendaMin,
+          produto.fornecedorId
+        ],
+      );
+      final id = result.insertId;
+      await context.query(
+          'INSERT INTO Estoque (codigo, quantidade, armazemId, produtoId) VALUES (?, ?, ?, ?)',
+          [faker.datatype.string(length: 10), quantidade, armazemId, id]);
+      return id;
+    });
 
     await conn.close();
     return id;
@@ -180,7 +208,7 @@ class ProdutoDao {
       );
     }
 
-    final produtos = await getProdutos();
+    final produtos = await getLastProducts(quantidade);
 
     if (categoriasIds.isNotEmpty) {
       for (var i = 0; i < produtos.length; i++) {
@@ -191,8 +219,7 @@ class ProdutoDao {
           }
         } catch (e) {
           final produto = produtos[i];
-          onProgress(
-              'Inserindo categorias do produto ${i + 1} de ${produtos.length}...');
+          onProgress('Inserindo categorias do produto ${i + 1}');
           final quantidadeCategorias = faker.datatype.number(
               min: 1, max: categoriasIds.length > 3 ? 3 : categoriasIds.length);
           var categoriasIdsCopia = [...categoriasIds];
@@ -209,15 +236,14 @@ class ProdutoDao {
     }
 
     //criar estoque para o produto
-    for (var i = 0; i < produtos.length; i++) {
+    for (var i = produtos.length - quantidade; i < produtos.length; i++) {
       try {
         final produto = await getProduto(produtos[i].id);
         if (produto!.estoque != null) {
           continue;
         }
       } catch (e) {
-        onProgress(
-            'Inserindo estoque do produto ${i + 1} de ${produtos.length}');
+        onProgress('Inserindo estoque do produto ${i + 1}');
         await conn.query(
           'INSERT INTO Estoque (codigo, quantidade, armazemId, produtoId) VALUES (?, ?, ?, ?)',
           [
@@ -244,13 +270,12 @@ class ProdutoDao {
       'zh_CN',
       'zh_TW',
     ];
-    for (var i = 0; i < produtos.length; i++) {
+    for (var i = produtos.length - quantidade; i < produtos.length; i++) {
       final produto = await getProduto(produtos[i].id);
       if (produto!.traducoes != null && produto.traducoes!.isNotEmpty) {
         continue;
       }
-      onProgress(
-          'Inserindo tradução do produto ${i + 1} de ${produtos.length}...');
+      onProgress('Inserindo tradução do produto ${i + 1}');
       final numeroTraducoes = faker.datatype.number(min: 1, max: 6);
       var idiomasCopia = [...idiomas];
       for (int i = 0; i < numeroTraducoes; i++) {
