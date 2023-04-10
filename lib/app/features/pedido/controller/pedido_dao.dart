@@ -76,30 +76,46 @@ class PedidoDao {
 
   static Future<int?> addPedido(Pedido pedido) async {
     final conn = await DbHelper.getConnection();
-    final result = await conn.query(
-      'INSERT INTO Pedido (data, modoEncomenda, status, prazoEntrega, clienteId) VALUES (?, ?, ?, ?, ?)',
-      [
-        pedido.data.toUtc(),
-        pedido.modoEncomenda == ModoEncomenda.Retirada ? 'Retirada' : 'Entrega',
-        pedido.status == Status.emPreparacao
-            ? 'Em preparação'
-            : pedido.status == Status.emTransporte
-                ? 'Em transporte'
-                : pedido.status == Status.entregue
-                    ? 'Entregue'
-                    : pedido.status == Status.pagamentoConfirmado
-                        ? 'Pagamento confirmado'
-                        : 'Aguardando pagamento',
-        pedido.prazoEntrega.toUtc(),
-        pedido.clienteId,
-      ],
-    );
-    final id = result.insertId;
 
-    for (var produtoPedido in pedido.produtosPedido!) {
-      produtoPedido.pedidoId = id;
-      await ProdutoPedidoDAO.addProdutoPedido(produtoPedido);
-    }
+    final id = await conn.transaction((context) async {
+      final result = await conn.query(
+        'INSERT INTO Pedido (data, modoEncomenda, status, prazoEntrega, clienteId) VALUES (?, ?, ?, ?, ?)',
+        [
+          pedido.data.toUtc(),
+          pedido.modoEncomenda == ModoEncomenda.Retirada
+              ? 'Retirada'
+              : 'Entrega',
+          pedido.status == Status.emPreparacao
+              ? 'Em preparação'
+              : pedido.status == Status.emTransporte
+                  ? 'Em transporte'
+                  : pedido.status == Status.entregue
+                      ? 'Entregue'
+                      : pedido.status == Status.pagamentoConfirmado
+                          ? 'Pagamento confirmado'
+                          : 'Aguardando pagamento',
+          pedido.prazoEntrega.toUtc(),
+          pedido.clienteId,
+        ],
+      );
+      final id = result.insertId;
+
+      for (var produtoPedido in pedido.produtosPedido!) {
+        produtoPedido.pedidoId = id;
+        await conn.query(
+          'INSERT INTO ProdutoPedido (pedidoId, produtoId, quantidade, precoVendaProduto) VALUES (?, ?, ?, ?)',
+          [
+            produtoPedido.pedidoId,
+            produtoPedido.produtoId,
+            produtoPedido.quantidade,
+            produtoPedido.precoVendaProduto,
+          ],
+        );
+      }
+
+      return id;
+    });
+
     await conn.close();
     return id;
   }
